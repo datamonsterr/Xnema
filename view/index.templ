@@ -1,0 +1,22 @@
+package view
+
+templ Index() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Document</title>
+			<link rel="stylesheet" href="/css/output.css"/>
+		</head>
+		<body>
+			<div id="container">
+				<div class="w-3/6 min-h-32 flex justify-center items-center" id="placeholder">
+					<p class="inline-block">Placeholder</p>
+				</div>
+				<div class="btn" hx-get="/click_btn" hx-target="#container" hx-swap="outerHTML" hx-trigger="click">Click me!</div>
+			</div>
+		</body>
+		<script src="/static/htmx.min.js"></script>
+	</html>
+}

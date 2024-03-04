@@ -7,7 +7,12 @@ import (
 
 func main() {
 	e := echo.New()
-	e.Static("/", "./view/css/output.css")
+
 	e.GET("/", handler.GetHomePage)
+	e.GET("/click_btn", handler.GetWelcomeMessage)
+
+	e.Static("/static", "static")
+	e.Static("/css", "css")
+
 	e.Start(":8080")
 }
