@@ -2,4 +2,4 @@ bin
 tmp
 .vscode
 node_modules
-bin
+css/output.css
