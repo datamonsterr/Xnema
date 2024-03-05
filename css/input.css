@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input {
+  display: none;
+}
+
+.item {
+  position: relative;
+  margin-left: 2rem;
+}
+.item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -1rem;
+  transform: translate(0, -50%);
+  width: 10px;
+  height: 10px;
+  background: rgb(255, 255, 255);
+  border-radius: 0.3mm;
+}

@@ -10,6 +10,9 @@ import "context"
 import "io"
 import "bytes"
 
+import "github.com/datamonsterr/SEProject/view/common"
+import "fmt"
+
 func SeatEditor(row_number int, col_number int) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -23,7 +26,86 @@ func SeatEditor(row_number int, col_number int) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<header class=\"flex justify-between items-center px-4 py-2 shadow-md\"><a href=\"#\" class=\"text-xl font-bold\">Movie Tickets</a><nav><a href=\"#\" class=\"px-2 py-1 hover:text-blue-500\">Home</a> <a href=\"#\" class=\"px-2 py-1 hover:text-blue-500\">Movies</a> <a href=\"#\" class=\"px-2 py-1 hover:text-blue-500\">Help</a></nav></header><main class=\"container mx-auto px-4 py-4 flex flex-col md:flex-row\"><aside class=\"w-full md:w-1/2 px-4 py-2 rounded-lg shadow-md mb-4 md:mb-0\"><h2 class=\"text-lg font-bold mb-2\">Select Date</h2><div class=\"flex justify-between items-center\"><p id=\"selected-date\" class=\"text-gray-600\">Today</p><input type=\"date\" min=\"&lt;?= date(&#39;Y-m-d&#39;) ?&gt;\" max=\"&lt;?= date(&#39;Y-m-d&#39;, strtotime(&#39;+1 week&#39;)) ?&gt;\" class=\"border border-gray-300 rounded p-1\"></div><h2 class=\"text-lg font-bold mt-4 mb-2\">Select Location</h2><select class=\"border border-gray-300 rounded p-1\"><option value=\"\">Choose Location</option> <option value=\"location1\">Location 1 (123 Main St)</option> <option value=\"location2\">Location 2 (456 Elm St)</option></select></aside><section class=\"w-full md:w-1/2 px-4 py-2 rounded-lg shadow-md\"><div class=\"relative\"><img src=\"placeholder.png\" alt=\"Screen\" class=\"w-full h-auto object-contain\"><div class=\"absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center\"></div></div><div class=\"flex justify-between items-center mt-4\"><div class=\"flex items-center\"><div class=\"w-4 h-4 mr-2 bg-green-500 rounded-full\"></div><p class=\"text-sm\">Available</p></div><div class=\"flex items-center\"><div class=\"w-4 h-4 mr-2 bg-red-500 rounded-full\"></div><p class=\"text-sm\">Unavailable</p></div><div class=\"flex items-center\"><div class=\"w-4 h-4 mr-2 bg-gray-300 rounded-full\"></div><p class=\"text-sm\">Disabled</p></div></div><div class=\"flex justify-between items-center mt-4\"><p class=\"text-gray-600\">Selected Seats: <span id=\"selected-seats\">0</span></p><p class=\"text-gray-600\">Total: $<span id=\"total-price\">0.00</span></p><button class=\"bg-blue-500 text-white px-4 py-2 rounded-md disabled:opacity-50\" disabled>Continue to Checkout</button></div></section></main>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-3/4 bg-black p-5 h-full\"><div class=\"h-full\"><div class=\"font-bold text-xl\">Movie Name</div><div class=\"w-2/3 h-5/6\"><div class=\"flex justify-end\"><div class=\"item\">Available</div><div class=\"item before:bg-slate-600\">Booked</div><div class=\"item before:bg-green-300\">Selected</div></div><div class=\"bg-slate-600 mt-5 text-center text-white\">Screen</div><div class=\"w-full h-2/3 mt-5 grid gap-3 grid-rows-10 grid-flow-col px-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for i := 0; i < 10; i++ {
+			for j := 0; j < 15; j++ {
+				if i == j {
+					templ_7745c5c3_Err = common.SeatSelection(fmt.Sprintf("%d-%d", i, j), true).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				} else {
+					templ_7745c5c3_Err = common.SeatSelection(fmt.Sprintf("%d-%d", i, j), false).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				}
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"w-full\"><div class=\"flex justify-evenly mt-5 mb-5\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-1", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-2", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-3", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-4", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-5", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-6", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-7", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-8", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-9", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.DateSelection("17", "Sat", "date-10", "date").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"flex justify-around\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.TimeSelection("11:00", "time-1", true, "time").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.TimeSelection("11:00", "time-2", false, "time").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = common.TimeSelection("11:00", "time-3", false, "time").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div><div class=\"flex justify-between\"><div class=\"\"><span><span class=\"\" id=\"tickets-count\">0</span> Tickets </span><div class=\"\" id=\"tickets-money\">0</div></div><div class=\"btn\">Book</div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,0 +1,9 @@
+package common
+
+templ DateSelection(day string, date string, id string, name string) {
+	<label class="bg-slate-600 text-lg w-fit p-3 rounded-md cursor-pointer has-[:checked]:bg-cyan-200 has-[:checked]:text-black">
+		<div class="">{ day }</div>
+		<div class="">{ date }</div>
+		<input type="radio" id={ id } name={ name }/>
+	</label>
+}

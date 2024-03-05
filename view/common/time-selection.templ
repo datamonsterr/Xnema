@@ -1,0 +1,8 @@
+package common
+
+templ TimeSelection(time string, id string, checked bool, name string) {
+	<label class="has-[:checked]:bg-cyan-300 has-[:checked]:text-black btn">
+		{ time }
+		<input type="radio" class="radio-lg" name={ name } id={ id } checked?={ checked }/>
+	</label>
+}

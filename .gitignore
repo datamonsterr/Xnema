@@ -2,3 +2,4 @@ bin
 tmp
 .vscode
 node_modules
+bin

@@ -1,0 +1,20 @@
+package common
+
+import "fmt"
+
+func getBg(disabled bool) string {
+	var bg string
+	if disabled {
+		bg = "bg-slate-900"
+	} else {
+		bg = "bg-slate-600"
+	}
+	return bg
+}
+
+templ SeatSelection(seatId string, disabled bool) {
+	<label for={ seatId } class={ fmt.Sprintf("w-full h-full %s has-[:checked]:bg-green-400", getBg(disabled)) }>
+		<div class="inline-block text-center w-full h-full"></div>
+		<input type="checkbox" name="tickets" id={ seatId } disabled?={ disabled }/>
+	</label>
+}
