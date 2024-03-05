@@ -3,9 +3,9 @@ package components
 import "fmt"
 
 templ SeatEditor(row_number int, col_number int) {
-	for i := range row_number {
+	for i := 0; i < row_number; i++ {
 		<div class="w-3/6 h-10 flex justify-around mt-5">
-			for j := range col_number {
+			for j := 0; j < col_number; j++ {
 				<div class="inline-block bg-slate-300 px-4" id={ fmt.Sprintf("seat-%d-%d", i, j) }></div>
 			}
 		</div>

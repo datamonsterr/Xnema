@@ -25,12 +25,12 @@ func SeatEditor(row_number int, col_number int) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		for i := range row_number {
+		for i := 0; i < row_number; i++ {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-3/6 h-10 flex justify-around mt-5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for j := range col_number {
+			for j := 0; j < col_number; j++ {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"inline-block bg-slate-300 px-4\" id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
