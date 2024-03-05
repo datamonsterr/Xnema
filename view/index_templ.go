@@ -23,7 +23,7 @@ func Index() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Document</title><link rel=\"stylesheet\" href=\"/css/output.css\"></head><body><div id=\"container\"><div class=\"w-3/6 min-h-32 flex justify-center items-center\" id=\"placeholder\"><p class=\"inline-block text-rose-300\">Placeholder</p></div><div class=\"btn\" hx-get=\"/click_btn\" hx-target=\"#container\" hx-swap=\"outerHTML\" hx-trigger=\"click\">Click me!</div></div></body><script src=\"/static/htmx.min.js\"></script></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Document</title><link rel=\"stylesheet\" href=\"/css/output.css\"></head><body><div id=\"container\"><div class=\"w-3/6 min-h-32 flex justify-center items-center\" id=\"placeholder\"><p class=\"inline-block text-rose-30\">Placeholder</p></div><div class=\"btn\" hx-get=\"/click_btn\" hx-target=\"#container\" hx-swap=\"outerHTML\" hx-trigger=\"click\">Click me!</div></div></body><script src=\"/static/htmx.min.js\"></script></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
