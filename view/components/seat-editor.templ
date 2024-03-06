@@ -3,11 +3,21 @@ package components
 import "github.com/datamonsterr/SEProject/view/common"
 import "fmt"
 
-templ SeatEditor(row_number int, col_number int) {
-	<div class="w-3/4 bg-black p-5 h-full">
-		<div class="h-full">
-			<div class="font-bold text-xl">Movie Name</div>
-			<div class="w-2/3 h-5/6">
+func isAvailable(i int, j int) bool {
+	if i == j+1 {
+		return false
+	}
+	return true
+}
+
+templ SeatEditor(row_number int, col_number int, id string) {
+	<div class="col-span-2 bg-black h-full" id="seat-editor">
+		<div class="h-full grid grid-cols-3 grid-rows-12">
+			<div class="font-bold text-xl row-span-1 col-span-full flex justify-between">
+				Movie Name
+				<span class="btn bg-black" hx-get={ fmt.Sprintf("/click/close/%s", id) } hx-swap="outerHTML" hx-target={ fmt.Sprintf("#%s", id) } hx-trigger="click">X</span>
+			</div>
+			<div class="row-span-10 col-span-2">
 				<div class="flex justify-end">
 					<div class="item">Available</div>
 					<div class="item before:bg-slate-600">Booked</div>
@@ -17,7 +27,7 @@ templ SeatEditor(row_number int, col_number int) {
 				<div class="w-full h-2/3 mt-5 grid gap-3 grid-rows-10 grid-flow-col px-4">
 					for i := 0; i < 10; i++ {
 						for j := 0; j < 15; j++ {
-							if i == j {
+							if !isAvailable(i, j) {
 								@common.SeatSelection(fmt.Sprintf("%d-%d", i, j), true)
 							} else {
 								@common.SeatSelection(fmt.Sprintf("%d-%d", i, j), false)
@@ -25,7 +35,7 @@ templ SeatEditor(row_number int, col_number int) {
 						}
 					}
 				</div>
-				<div class="w-full">
+				<div class="">
 					<div class="flex justify-evenly mt-5 mb-5">
 						@common.DateSelection("17", "Sat", "date-1", "date")
 						@common.DateSelection("17", "Sat", "date-2", "date")
@@ -45,7 +55,8 @@ templ SeatEditor(row_number int, col_number int) {
 					</div>
 				</div>
 			</div>
-			<div class="flex justify-between">
+			<div class="col-span-1 row-span-10 text-center text-blue-300">Payment here</div>
+			<div class="row-span-1 col-span-full flex justify-between">
 				<div class="">
 					<span><span class="" id="tickets-count">0</span> Tickets </span>
 					<div class="" id="tickets-money">0</div>

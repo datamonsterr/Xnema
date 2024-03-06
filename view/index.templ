@@ -1,5 +1,7 @@
 package view
 
+import "github.com/datamonsterr/SEProject/view/components"
+
 templ Index() {
 	<!DOCTYPE html>
 	<html lang="en">
@@ -20,11 +22,48 @@ templ Index() {
 			/>
 		</head>
 		<body class="h-screen">
-			<div id="container">
-				<div class="w-3/6 min-h-32 flex justify-center items-center" id="placeholder">
-					<p class="inline-block text-rose-30">Placeholder</p>
+			<div class="navbar bg-base-300">
+				<div class="navbar-start">
+					<div class="dropdown">
+						<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+						</div>
+						<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+							<li><a>Homepage</a></li>
+							<li><a>Portfolio</a></li>
+							<li><a>About</a></li>
+						</ul>
+					</div>
 				</div>
-				<div class="btn" hx-get="/click_btn" hx-target="#container" hx-swap="outerHTML" hx-trigger="click">Click me!</div>
+				<div class="navbar-center">
+					<a class="btn btn-ghost text-xl">daisyUI</a>
+				</div>
+				<div class="navbar-end">
+					<input type="text" placeholder="Search" class="input input-bordered mr-3"/>
+					<div class="dropdown dropdown-end">
+						<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+							<div class="w-10 rounded-full">
+								<img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
+							</div>
+						</div>
+						<ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-52">
+							<li>
+								<a class="justify-between">
+									Profile
+									<span class="badge">New</span>
+								</a>
+							</li>
+							<li><a>Settings</a></li>
+							<li><a>Logout</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="w-screen grid grid-cols-3">
+				<div class="p-5 col-span-2">
+					@components.MovieCard("Spiderman 10", "Ayyo wassup", "se1")
+				</div>
+				<div class="col-span-1">filter</div>
 			</div>
 		</body>
 		<script src="/static/htmx.min.js"></script>

@@ -13,7 +13,7 @@ func getBg(disabled bool) string {
 }
 
 templ SeatSelection(seatId string, disabled bool) {
-	<label for={ seatId } class={ fmt.Sprintf("w-full h-full %s has-[:checked]:bg-green-400", getBg(disabled)) }>
+	<label for={ seatId } class={ fmt.Sprintf("cursor-pointer w-full h-full %s has-[:checked]:bg-green-400", getBg(disabled)) }>
 		<div class="inline-block text-center w-full h-full"></div>
 		<input type="checkbox" name="tickets" id={ seatId } disabled?={ disabled }/>
 	</label>

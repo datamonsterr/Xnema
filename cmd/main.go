@@ -9,7 +9,8 @@ func main() {
 	e := echo.New()
 
 	e.GET("/", handler.GetHomePage)
-	e.GET("/click_btn", handler.GetWelcomeMessage)
+	e.GET("/click/open/:id", handler.GetBookingView)
+	e.GET("/click/close/:id", handler.RemoveElm)
 
 	e.Static("/static", "static")
 	e.Static("/css", "css")

@@ -1,0 +1,20 @@
+package components
+
+import "fmt"
+
+templ MovieCard(name string, description string, id string) {
+	<div class="p-5 w-full h-full">
+		<div class="card card-side bg-base-200 mb-5">
+			<figure><img src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg" alt={ name }/></figure>
+			<div class="card-body">
+				<h2 class="card-title">{ name }</h2>
+				<p>{ description }</p>
+				<div class="card-actions justify-end">
+					<button class="btn btn-primary" hx-target={ fmt.Sprintf("#%s", id) } hx-get={ fmt.Sprintf("/click/open/%s", id) } hx-swap="outerHTML" hx-trigger="click">Book Tickets</button>
+					<button class="btn btn-primary">Reviews</button>
+				</div>
+			</div>
+		</div>
+		<span id={ id }></span>
+	</div>
+}
