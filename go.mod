@@ -1,6 +1,6 @@
-module github.com/datamonsterr/SEProject
+module example.com/test
 
-go 1.22.0
+go 1.21.7
 
 require (
 	github.com/a-h/templ v0.2.598
