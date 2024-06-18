@@ -4,6 +4,12 @@
 
 @import "daisyui";
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 #seat-editor input {
   display: none;
 }
@@ -22,4 +28,12 @@
   height: 10px;
   background: rgb(255, 255, 255);
   border-radius: 0.3mm;
+}
+
+#container {
+  padding-top: 110px;
+}
+
+.btn-primary {
+  color: white;
 }

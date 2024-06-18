@@ -6,8 +6,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GetHomePage(c echo.Context) error {
+func GetIndex(c echo.Context) error {
 	return RenderTemplComponent(c, view.Index())
+}
+
+func GetHome(c echo.Context) error {
+	return RenderTemplComponent(c, components.Home())
 }
 
 func GetBookingView(c echo.Context) error {

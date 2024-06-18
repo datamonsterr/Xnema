@@ -4,12 +4,12 @@ import "example.com/test/view/components"
 
 templ Index() {
 	<!DOCTYPE html>
-	<html lang="en" data-theme="mytheme">
+	<html lang="en" data-theme="xnema">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>Document</title>
-			<link rel="stylesheet" href="/css/output.css"/>
+			<link rel="stylesheet" href="/static/css/output.css"/>
 			<link
 				href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp|Material+Icons+Two+Tone"
 				rel="stylesheet"
@@ -20,52 +20,17 @@ templ Index() {
 				href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
 				rel="stylesheet"
 			/>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap" rel="stylesheet"/>
 		</head>
-		<body class="h-screen">
-			<div class="navbar bg-base-300">
-				<div class="navbar-start">
-					<div class="dropdown">
-						<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
-						</div>
-						<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-							<li><a>Homepage</a></li>
-							<li><a>Portfolio</a></li>
-							<li><a>About</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="navbar-center">
-					<a class="btn btn-ghost text-xl">daisyUI</a>
-				</div>
-				<div class="navbar-end">
-					<input type="text" placeholder="Search" class="input input-bordered mr-3"/>
-					<div class="dropdown dropdown-end">
-						<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-							<div class="w-10 rounded-full">
-								<img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
-							</div>
-						</div>
-						<ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-52">
-							<li>
-								<a class="justify-between">
-									Profile
-									<span class="badge">New</span>
-								</a>
-							</li>
-							<li><a>Settings</a></li>
-							<li><a>Logout</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="w-screen grid grid-cols-3">
-				<div class="p-5 col-span-2">
-					@components.MovieCard("Spiderman 10", "Ayyo wassup", "se1")
-				</div>
-				<div class="col-span-1">filter</div>
+		<body class="max-w-screen bg-base-100 flex justify-center">
+			@components.Navbar("guest")
+			<div id="container" class="h-full bg-base-100 flex flex-col items-center w-8/12">
+				@components.Home()
 			</div>
 		</body>
-		<script src="/static/htmx.min.js"></script>
+		<script src="/static/scripts/htmx.min.js"></script>
+		<script src="./static/scripts/custom.js"></script>
 	</html>
 }

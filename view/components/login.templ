@@ -1,0 +1,21 @@
+package components;
+
+import "example.com/test/view/common"
+
+templ Login() {
+	<div class="w-1/3 px-20 h-1/2 pb-40 flex flex-col justify-evenly pt-40">
+		<div>
+			@common.InputText("username", "Username", false)
+			<div class="flex justify-end mt-2">
+				<span>Create a new account?</span>
+			</div>
+		</div>
+		<div>
+			@common.InputText("password", "Password", true)
+			<div class="flex justify-end mt-2">
+				<span>Forgot Password? </span>
+			</div>
+		</div>
+		<div class="btn btn-primary mt-4 text-xl" onclick="btnLoginPressed()">Login</div>
+	</div>
+}

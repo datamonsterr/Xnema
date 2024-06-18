@@ -8,14 +8,15 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        mytheme: {
-          "primary": "#cccccc",
-          "secondary": "#f6d860",
-          "accent": "#37cdbe",
+        xnema: {
+          "primary": "#E54B4B",
+          "secondary": "#4B9BE5",
           "neutral": "#3d4451",
-          "base-300": "#ffffff",
-          "info": "#2094f3",
-          "success": "#009485",
+          "base-100": "#000000",
+          "base-200": "#111111",
+          "base-300": "#222222",
+          "ghost": "#86afff",
+          "success": "#86efac",
           "warning": "#ff9900",
           "error": "#ff5724",
         },

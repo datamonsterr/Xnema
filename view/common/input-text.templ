@@ -1,0 +1,20 @@
+package common;
+
+func setType(hidden bool) string {
+	if hidden {
+		return "password"
+	}
+	return "text"
+}
+
+templ InputText(id string, label string, hidden bool) {
+	<div>
+		<label for="account" class="block text-xl font-medium mb-4">{ label }</label>
+		<input
+			type={ setType(hidden) }
+			id={ id }
+			name={ id }
+			class="block w-full p-2 text-xl bg-base-200 border-none text-white"
+		/>
+	</div>
+}

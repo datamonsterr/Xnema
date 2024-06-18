@@ -6,4 +6,4 @@ run: build
 	bin/server.exe
 
 css-watch:
-	@tailwindcss -i css/input.css -o css/output.css --watch
+	@tailwindcss -i css/input.css -o static/css/output.css --watch
