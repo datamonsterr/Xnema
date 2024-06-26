@@ -1,9 +1,12 @@
 package common;
 
-templ Poster(imgUrl string, alt string) {
-	<div class="min-w-96 p-2">
-		<div class="bg-gray-700 max-h-96 flex items-center justify-center">
-			<img src={ imgUrl } alt/>
+import "fmt"
+
+templ Poster(imgUrl string, alt string, id int) {
+	<div id={ fmt.Sprintf("poster-%d", id) } class="min-w-96 p-2">
+		<div class="bg-gray-700 flex items-center justify-center relative">
+			<img src={ imgUrl } alt class="h-full"/>
+			<div class="hover: bg-red-100 opacity-40 z-10 h-full w-full absolute left-0 top-0"></div>
 		</div>
 	</div>
 }

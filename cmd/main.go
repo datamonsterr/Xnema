@@ -12,6 +12,7 @@ func main() {
 
 	e.GET("/", handler.GetIndex)
 	e.GET("/home", handler.GetHome)
+	e.GET("/home/news", handler.GetNews)
 	// e.GET("/click/open/:id", handler.GetBookingView)
 
 	e.POST("/login/auth", handler.CheckLogin)

@@ -13,4 +13,3 @@ async function btnLoginPressed() {
     let response = await request.text();
     container.innerHTML = await response;
 }
-
