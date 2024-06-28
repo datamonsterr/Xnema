@@ -2,6 +2,14 @@ package components;
 
 import "example.com/test/view/common"
 
+templ LoginSuccess(username string, password string) {
+	<div>
+		<h1 class="text-red-500">Login Success</h1>
+		<p>Username: { username }</p>
+		<p>Password: { password }</p>
+	</div>
+}
+
 templ Login() {
 	<div class="w-1/3 px-20 h-1/2 pb-40 flex flex-col justify-evenly pt-40">
 		<div>

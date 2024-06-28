@@ -1,0 +1,24 @@
+package components
+
+import "example.com/test/db"
+
+templ MovieInfo(movie db.Movie) {
+	<div class="w-full bg-base-200 grid grid-cols-12 grid-flow-row">
+		<div class="col-span-4 flex flex-col items-center">
+			<div>{ movie.Title.String }</div>
+			<div>
+				<img src={ movie.Url.String } alt={ movie.Title.String } class="h-96"/>
+			</div>
+			<div class="btn btn-primary w-52 mt-5">Booking</div>
+		</div>
+		<div class="col-span-8 py-5">
+			<div>
+				<div><span>Original language:</span> { movie.OriginalLanguage.String }</div>
+			</div>
+			<div>
+				<div class="font-bold text-3xl mb-3 mt-5">Summary</div>
+				<div class="text-xl">{ movie.Overview.String }</div>
+			</div>
+		</div>
+	</div>
+}

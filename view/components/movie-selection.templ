@@ -1,0 +1,38 @@
+package components
+
+import "fmt"
+import "example.com/test/db"
+
+script HoverOut(id int) {
+	let poster = document.getElementById(`poster-${id}`);
+	let hover = poster.querySelector(".poster-hover");
+	hover.classList.add("hidden");
+	hover.classList.remove("flex");
+}
+
+script HoverIn(id int) {
+	let poster = document.getElementById(`poster-${id}`);
+	let hover = poster.querySelector(".poster-hover");
+	hover.classList.remove("hidden");
+	hover.classList.add("flex");
+}
+
+templ Poster(imgUrl string, alt string, id int) {
+	<div id={ fmt.Sprintf("poster-%d", id) } class="min-w-96 px-5" onmouseenter={ HoverIn(id) } onmouseleave={ HoverOut(id) }>
+		<div class="flex items-center justify-center relative">
+			<img src={ imgUrl } alt={ alt } class="w-full"/>
+			<div class="poster-hover bg-base-100 bg-opacity-30 z-20  w-full h-full absolute left-0 top-0 flex-col-reverse hidden">
+				<div class="flex justify-evenly text-xl h-fit pb-10">
+					<div class="btn btn-secondary text-white w-4/12" hx-get={ fmt.Sprintf("/movie/%d/info", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Details</div>
+					<div class="btn btn-primary w-4/12" hx-get={ fmt.Sprintf("/movie/%d/booking", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Booking</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+templ MovieSelection(movies []db.Movie) {
+	for _, movie := range movies {
+		@Poster(movie.Url.String, movie.Title.String, int(movie.MovieID))
+	}
+}

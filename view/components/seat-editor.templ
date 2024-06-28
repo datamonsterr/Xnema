@@ -1,6 +1,5 @@
 package components
 
-import "example.com/test/view/common"
 import "fmt"
 
 func isAvailable(i int, j int) bool {
@@ -10,11 +9,43 @@ func isAvailable(i int, j int) bool {
 	return true
 }
 
-templ SeatEditor(row_number int, col_number int, id string) {
+func getBg(disabled bool) string {
+	var bg string
+	if disabled {
+		bg = "bg-slate-900"
+	} else {
+		bg = "bg-slate-600"
+	}
+	return bg
+}
+
+templ DateSelection(day string, date string, id string, name string) {
+	<label class="bg-slate-600 text-lg w-fit p-3 rounded-md cursor-pointer has-[:checked]:bg-cyan-200 has-[:checked]:text-black">
+		<div class="">{ day }</div>
+		<div class="">{ date }</div>
+		<input type="radio" id={ id } name={ name }/>
+	</label>
+}
+
+templ TimeSelection(time string, id string, checked bool, name string) {
+	<label class="has-[:checked]:bg-cyan-300 has-[:checked]:text-black btn">
+		{ time }
+		<input type="radio" class="radio-lg" name={ name } id={ id } checked?={ checked }/>
+	</label>
+}
+
+templ SeatSelection(seatId string, disabled bool) {
+	<label for={ seatId } class={ fmt.Sprintf("cursor-pointer w-full h-full %s has-[:checked]:bg-green-400", getBg(disabled)) }>
+		<div class="inline-block text-center w-full h-full"></div>
+		<input type="checkbox" name="tickets" id={ seatId } disabled?={ disabled }/>
+	</label>
+}
+
+templ SeatEditor(row_number int, col_number int, id string, title string) {
 	<div class="col-span-2 bg-black h-full" id="seat-editor">
 		<div class="h-full grid grid-cols-3 grid-rows-12">
 			<div class="font-bold text-xl row-span-1 col-span-full flex justify-between">
-				Movie Name
+				{ title }
 				<span class="btn bg-black" hx-get={ fmt.Sprintf("/click/close/%s", id) } hx-swap="outerHTML" hx-target={ fmt.Sprintf("#%s", id) } hx-trigger="click">X</span>
 			</div>
 			<div class="row-span-10 col-span-2">
@@ -28,30 +59,30 @@ templ SeatEditor(row_number int, col_number int, id string) {
 					for i := 0; i < 10; i++ {
 						for j := 0; j < 15; j++ {
 							if !isAvailable(i, j) {
-								@common.SeatSelection(fmt.Sprintf("%d-%d", i, j), true)
+								@SeatSelection(fmt.Sprintf("%d-%d", i, j), true)
 							} else {
-								@common.SeatSelection(fmt.Sprintf("%d-%d", i, j), false)
+								@SeatSelection(fmt.Sprintf("%d-%d", i, j), false)
 							}
 						}
 					}
 				</div>
 				<div class="">
 					<div class="flex justify-evenly mt-5 mb-5">
-						@common.DateSelection("17", "Sat", "date-1", "date")
-						@common.DateSelection("17", "Sat", "date-2", "date")
-						@common.DateSelection("17", "Sat", "date-3", "date")
-						@common.DateSelection("17", "Sat", "date-4", "date")
-						@common.DateSelection("17", "Sat", "date-5", "date")
-						@common.DateSelection("17", "Sat", "date-6", "date")
-						@common.DateSelection("17", "Sat", "date-7", "date")
-						@common.DateSelection("17", "Sat", "date-8", "date")
-						@common.DateSelection("17", "Sat", "date-9", "date")
-						@common.DateSelection("17", "Sat", "date-10", "date")
+						@DateSelection("17", "Sat", "date-1", "date")
+						@DateSelection("17", "Sat", "date-2", "date")
+						@DateSelection("17", "Sat", "date-3", "date")
+						@DateSelection("17", "Sat", "date-4", "date")
+						@DateSelection("17", "Sat", "date-5", "date")
+						@DateSelection("17", "Sat", "date-6", "date")
+						@DateSelection("17", "Sat", "date-7", "date")
+						@DateSelection("17", "Sat", "date-8", "date")
+						@DateSelection("17", "Sat", "date-9", "date")
+						@DateSelection("17", "Sat", "date-10", "date")
 					</div>
 					<div class="flex justify-around">
-						@common.TimeSelection("11:00", "time-1", true, "time")
-						@common.TimeSelection("11:00", "time-2", false, "time")
-						@common.TimeSelection("11:00", "time-3", false, "time")
+						@TimeSelection("11:00", "time-1", true, "time")
+						@TimeSelection("11:00", "time-2", false, "time")
+						@TimeSelection("11:00", "time-3", false, "time")
 					</div>
 				</div>
 			</div>

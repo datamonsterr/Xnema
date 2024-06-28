@@ -2,16 +2,10 @@ package components;
 
 import "fmt"
 
-script jumpToSlide(x int) {
-    
-}
-
 templ News(slides []string) {
-	<div class="flex justify-evenly">
-		for i, src := range slides {
-			<div id={ fmt.Sprintf("news-%d", i) } class="carousel-item relative w-full h-full">
-				<img src={ src }/>
-			</div>
-		}
-	</div>
+	for i, src := range slides {
+		<div id={ fmt.Sprintf("news-%d", i) } class="min-w-full px-20">
+			<img src={ src } class="w-full"/>
+		</div>
+	}
 }
