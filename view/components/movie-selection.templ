@@ -24,7 +24,7 @@ templ Poster(imgUrl string, alt string, id int) {
 			<div class="poster-hover bg-base-100 bg-opacity-30 z-20  w-full h-full absolute left-0 top-0 flex-col-reverse hidden">
 				<div class="flex justify-evenly text-xl h-fit pb-10">
 					<div class="btn btn-secondary text-white w-4/12" hx-get={ fmt.Sprintf("/movie/%d/info", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Details</div>
-					<div class="btn btn-primary w-4/12" hx-get={ fmt.Sprintf("/movie/%d/booking", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Booking</div>
+					<div class="btn btn-primary w-4/12" hx-get={ fmt.Sprintf("restricted/movie/%d/booking", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Booking</div>
 				</div>
 			</div>
 		</div>

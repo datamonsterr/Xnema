@@ -7,6 +7,8 @@ package db
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const getMovie = `-- name: GetMovie :one
@@ -66,3 +68,59 @@ func (q *Queries) GetMovies(ctx context.Context) ([]Movie, error) {
 	}
 	return items, nil
 }
+
+const getScheduleDate = `-- name: GetScheduleDate :many
+SELECT DISTINCT schedule_movie_date FROM schedule
+WHERE movie_id = $1
+`
+
+func (q *Queries) GetScheduleDate(ctx context.Context, movieID pgtype.Int4) ([]pgtype.Date, error) {
+	rows, err := q.db.Query(ctx, getScheduleDate, movieID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []pgtype.Date
+	for rows.Next() {
+		var schedule_movie_date pgtype.Date
+		if err := rows.Scan(&schedule_movie_date); err != nil {
+			return nil, err
+		}
+		items = append(items, schedule_movie_date)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getScheduleTime = `-- name: GetScheduleTime :many
+SELECT schedule_movie_start FROM schedule
+WHERE movie_id = $1 AND schedule_movie_date = $2
+`
+
+type GetScheduleTimeParams struct {
+	MovieID           pgtype.Int4
+	ScheduleMovieDate pgtype.Date
+}
+
+func (q *Queries) GetScheduleTime(ctx context.Context, arg GetScheduleTimeParams) ([]pgtype.Time, error) {
+	rows, err := q.db.Query(ctx, getScheduleTime, arg.MovieID, arg.ScheduleMovieDate)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []pgtype.Time
+	for rows.Next() {
+		var schedule_movie_start pgtype.Time
+		if err := rows.Scan(&schedule_movie_start); err != nil {
+			return nil, err
+		}
+		items = append(items, schedule_movie_start)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+

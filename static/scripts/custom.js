@@ -9,7 +9,7 @@ async function btnLoginPressed() {
 
     let container = document.getElementById("container");
 
-    let request = await fetch("/login/auth", { method: "POST", headers: { "Content-type": "application/json; charset=UTF-8" }, body: JSON.stringify({ username: username, password: password }) });
+    let request = await fetch("/auth/login", { method: "POST", headers: { "Content-type": "application/json; charset=UTF-8" }, body: JSON.stringify({ username: username, password: password }) });
     let response = await request.text();
     container.innerHTML = await response;
 }
