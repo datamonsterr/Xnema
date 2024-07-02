@@ -1,0 +1,43 @@
+package components
+
+import "fmt"
+import "example.com/test/db"
+import "example.com/test/models"
+
+script HoverOut(id int) {
+	let poster = document.getElementById(`poster-${id}`);
+	let hover = poster.querySelector(".poster-hover");
+	hover.classList.add("hidden");
+	hover.classList.remove("flex");
+}
+
+script HoverIn(id int) {
+	let poster = document.getElementById(`poster-${id}`);
+	let hover = poster.querySelector(".poster-hover");
+	hover.classList.remove("hidden");
+	hover.classList.add("flex");
+}
+
+templ Poster(imgUrl string, alt string, id int) {
+	<div id={ fmt.Sprintf("poster-%d", id) } class="w-1/3" onmouseenter={ HoverIn(id) } onmouseleave={ HoverOut(id) }>
+		<div class="flex items-center justify-center relative">
+			<img src={ imgUrl } alt={ alt } class="w-full min-w-96 object-fill px-5" style="height: 500px;"/>
+			<div class="poster-hover bg-base-100 bg-opacity-30 z-20  w-full h-full absolute left-0 top-0 flex-col-reverse hidden">
+				<div class="flex justify-evenly text-xl h-fit pb-10">
+					<div class="btn btn-secondary text-white w-4/12" hx-get={ fmt.Sprintf("/movie/%d/info", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Details</div>
+					if models.GetUserData(ctx).UserRole == "user" {
+						<div class="btn btn-primary w-4/12" hx-get={ fmt.Sprintf("restricted/movie/%d/booking", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Booking</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+templ MovieSelection(movies []db.Movie) {
+	<div id="movieSelection" class="flex transition-transform duration-300 h-full w-full overflow-x-auto">
+		for _, movie := range movies {
+			@Poster(movie.Url.String, movie.Title.String, int(movie.MovieID))
+		}
+	</div>
+}

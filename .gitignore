@@ -1,0 +1,7 @@
+bin
+tmp
+.vscode
+node_modules
+css/output.css
+view/**/*_templ.go
+.env

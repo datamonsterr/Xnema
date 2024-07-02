@@ -1,0 +1,36 @@
+package components;
+
+import "fmt"
+
+templ Input(t string, id string, label string, required bool, maxLength int, minLength int) {
+	<div class="mt-5">
+		<label for="account" class="block text-xl font-medium mb-4">{ label }</label>
+		<input
+			type={ t }
+			id={ id }
+			name={ id }
+			required?={ required }
+			maxlength={ fmt.Sprintf("%d", maxLength) }
+			minlength={ fmt.Sprintf("%d", minLength) }
+			class="block w-full p-2 text-xl bg-base-200 border-none text-white"
+		/>
+	</div>
+}
+
+templ Done(msg string) {
+	<div class="alert alert-error mt-5">
+		<label>{ msg }</label>
+	</div>
+	<a href="/">Go back to the main page</a>
+}
+
+templ CreateAccount() {
+	<form id="create-account-form" class="w-2/3">
+		@Input("text", "name", "Name", true, 50, 5)
+		@Input("text", "email", "Email", true, 100, 5)
+		@Input("text", "phone", "Phone number", true, 10, 10)
+		@Input("password", "password", "Password", true, 100, 8)
+		@Input("password", "confirmPassword", "Retype your password", true, 100, 8)
+		<button type="submit" class="btn btn-primary w-full mt-5" hx-post="/auth/register" hx-target="#container" hx-trigger="click" hx-swap="innerHTML" hx-params="*">Create Account</button>
+	</form>
+}
