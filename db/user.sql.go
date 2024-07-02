@@ -11,14 +11,48 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const getUserPassword = `-- name: GetUserPassword :one
-SELECT password FROM users
+const createUser = `-- name: CreateUser :one
+INSERT INTO users (email, password, username, phone, birth_date)
+VALUES ($1, $2, $3, $4, $5)
+RETURNING user_id
+`
+
+type CreateUserParams struct {
+	Email     pgtype.Text
+	Password  pgtype.Text
+	Username  pgtype.Text
+	Phone     pgtype.Text
+	BirthDate pgtype.Date
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int32, error) {
+	row := q.db.QueryRow(ctx, createUser,
+		arg.Email,
+		arg.Password,
+		arg.Username,
+		arg.Phone,
+		arg.BirthDate,
+	)
+	var user_id int32
+	err := row.Scan(&user_id)
+	return user_id, err
+}
+
+const getUserByEmail = `-- name: GetUserByEmail :one
+SELECT user_id, username, email, birth_date, password, phone FROM users
 WHERE email = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserPassword(ctx context.Context, email pgtype.Text) (pgtype.Text, error) {
-	row := q.db.QueryRow(ctx, getUserPassword, email)
-	var password pgtype.Text
-	err := row.Scan(&password)
-	return password, err
+func (q *Queries) GetUserByEmail(ctx context.Context, email pgtype.Text) (User, error) {
+	row := q.db.QueryRow(ctx, getUserByEmail, email)
+	var i User
+	err := row.Scan(
+		&i.UserID,
+		&i.Username,
+		&i.Email,
+		&i.BirthDate,
+		&i.Password,
+		&i.Phone,
+	)
+	return i, err
 }

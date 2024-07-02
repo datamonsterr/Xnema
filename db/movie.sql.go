@@ -11,6 +11,33 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const bookTicket = `-- name: BookTicket :one
+INSERT INTO ticket (user_id, movie_id, cinema_id, schedule_id, seat_id)
+VALUES ($1, $2, $3, $4, $5)
+RETURNING ticket.id
+`
+
+type BookTicketParams struct {
+	UserID     pgtype.Int4
+	MovieID    pgtype.Int4
+	CinemaID   pgtype.Int4
+	ScheduleID pgtype.Int4
+	SeatID     pgtype.Int4
+}
+
+func (q *Queries) BookTicket(ctx context.Context, arg BookTicketParams) (int32, error) {
+	row := q.db.QueryRow(ctx, bookTicket,
+		arg.UserID,
+		arg.MovieID,
+		arg.CinemaID,
+		arg.ScheduleID,
+		arg.SeatID,
+	)
+	var id int32
+	err := row.Scan(&id)
+	return id, err
+}
+
 const getMovie = `-- name: GetMovie :one
 SELECT movie_id, title, overview, original_language, ageres, release_date, status, tagline, length, url FROM movie 
 WHERE movie_id = $1 LIMIT 1
@@ -35,7 +62,11 @@ func (q *Queries) GetMovie(ctx context.Context, movieID int32) (Movie, error) {
 }
 
 const getMovies = `-- name: GetMovies :many
-SELECT movie_id, title, overview, original_language, ageres, release_date, status, tagline, length, url FROM movie LIMIT 20
+SELECT DISTINCT m.movie_id, m.title, m.overview, m.original_language, m.ageres, m.release_date, m.status, m.tagline, m.length, m.url
+FROM movie m
+INNER JOIN schedule s ON m.movie_id = s.movie_id
+ORDER BY m.release_date
+LIMIT 10
 `
 
 func (q *Queries) GetMovies(ctx context.Context) ([]Movie, error) {
@@ -95,7 +126,7 @@ func (q *Queries) GetScheduleDate(ctx context.Context, movieID pgtype.Int4) ([]p
 }
 
 const getScheduleTime = `-- name: GetScheduleTime :many
-SELECT schedule_movie_start FROM schedule
+SELECT schedule_id ,schedule_movie_start FROM schedule
 WHERE movie_id = $1 AND schedule_movie_date = $2
 `
 
@@ -104,23 +135,27 @@ type GetScheduleTimeParams struct {
 	ScheduleMovieDate pgtype.Date
 }
 
-func (q *Queries) GetScheduleTime(ctx context.Context, arg GetScheduleTimeParams) ([]pgtype.Time, error) {
+type GetScheduleTimeRow struct {
+	ScheduleID         int32
+	ScheduleMovieStart pgtype.Time
+}
+
+func (q *Queries) GetScheduleTime(ctx context.Context, arg GetScheduleTimeParams) ([]GetScheduleTimeRow, error) {
 	rows, err := q.db.Query(ctx, getScheduleTime, arg.MovieID, arg.ScheduleMovieDate)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []pgtype.Time
+	var items []GetScheduleTimeRow
 	for rows.Next() {
-		var schedule_movie_start pgtype.Time
-		if err := rows.Scan(&schedule_movie_start); err != nil {
+		var i GetScheduleTimeRow
+		if err := rows.Scan(&i.ScheduleID, &i.ScheduleMovieStart); err != nil {
 			return nil, err
 		}
-		items = append(items, schedule_movie_start)
+		items = append(items, i)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 	return items, nil
 }
-

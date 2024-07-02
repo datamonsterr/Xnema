@@ -33,7 +33,7 @@ templ Navbar(role string) {
 				<div class="relative w-20 h-10">
 					<img src="https://avatars.dicebear.com/api/avataaars/1234.svg" class="w-10 h-10 rounded-full" onclick={ ClickAvt() }/>
 					<div id="profileMenu" class="bg-base-300 min-w-fit h-fit hidden absolute z-50 right-0 top-12 px-10 py-5">
-						<div class="hover:text-primary">Logout</div>
+						<div class="hover:text-primary" hx-get="/restricted/logout" hx-target="body" hx-trigger="click" hx-swap="innerHTML">Logout</div>
 						<div class="min-w-40 hover:text-primary">View Account</div>
 					</div>
 				</div>

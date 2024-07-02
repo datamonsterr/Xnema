@@ -3,18 +3,25 @@ package components
 import "example.com/test/db"
 
 templ MovieInfo(movie db.Movie) {
-	<div class="w-full bg-base-200 grid grid-cols-12 grid-flow-row">
-		<div class="col-span-4 flex flex-col items-center">
+	<div class="flex justify-between w-full bg-base-200 py-10 px-20">
+		<div class="flex flex-col items-center w-3/12">
 			<div>{ movie.Title.String }</div>
 			<div>
-				<img src={ movie.Url.String } alt={ movie.Title.String } class="h-96"/>
+				<img src={ movie.Url.String } alt={ movie.Title.String } class="w-full"/>
 			</div>
 			<div class="btn btn-primary w-52 mt-5">Booking</div>
 		</div>
-		<div class="col-span-8 py-5">
-			<div><span>Original language:</span> { movie.OriginalLanguage.String }</div>
+		<div class="flex flex-col items-center w-8/12">
 			<div>
-				<div class="font-bold text-3xl mb-3 mt-5">Summary</div>
+				<div>
+					<span>Original language:</span> { movie.OriginalLanguage.String }
+				</div>
+				<div>
+					<span>Release date:</span> { movie.ReleaseDate.Time.Format("02-January-2006") }
+				</div>
+			</div>
+			<div>
+				<div class="font-bold text-3xl mb-3 mt-5 text-balance">Summary</div>
 				<div class="text-xl">{ movie.Overview.String }</div>
 			</div>
 		</div>

@@ -3,9 +3,19 @@ package components;
 import "fmt"
 
 templ News(slides []string) {
-	for i, src := range slides {
-		<div id={ fmt.Sprintf("news-%d", i) } class="min-w-full px-20">
-			<img src={ src } class="w-full"/>
+	<div class="relative w-full overflow-hidden">
+		<div id="newsLeftBtn" class="cursor-pointer select-none absolute left-0 top-1/2 z-10 text-5xl">
+			❮
 		</div>
-	}
+		<div id="news" class="flex transition-transform">
+			for i, src := range slides {
+				<div id={ fmt.Sprintf("news-%d", i) } class="min-w-full px-20">
+					<img src={ src } class="w-full"/>
+				</div>
+			}
+		</div>
+		<div id="newsRightBtn" class="cursor-pointer select-none absolute right-0 top-1/2 z-10 text-5xl">
+			❯
+		</div>
+	</div>
 }

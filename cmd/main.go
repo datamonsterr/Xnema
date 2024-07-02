@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"example.com/test/handler"
+	echojwt "github.com/labstack/echo-jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -11,25 +12,34 @@ import (
 func main() {
 	e := echo.New()
 	r := e.Group("/restricted")
-	au := e.Group("/auth")
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339} ${method} ${status} ${uri} ${error}\n",
 	}))
+	e.Use(middleware.Recover())
+	config := echojwt.Config{
+		NewClaimsFunc: handler.GetClaims,
+		SigningKey:    []byte("secret"),
+	}
+	r.Use(echojwt.WithConfig(config))
 
-	e.GET("/", handler.GetIndex)
+	e.GET("", handler.GetIndex)
+
 	e.GET("/home", handler.GetHome)
 	e.GET("/home/news", handler.GetNews)
-	r.GET("/movie/:id/booking", handler.GetBookingView)
 	e.GET("/home/movies", handler.GetMovieSelection)
 	e.GET("/movie/:id/info", handler.GetMovieInfo)
-	e.POST("/movie/book", handler.PostMovieBook)
+	r.POST("/movie/book", handler.PostMovieBook)
 
-	e.GET("/movie/schedule/:id/:date", handler.GetScheduleTimeInDate)
+	r.GET("/movie/:id/booking", handler.GetBookingView)
+	r.GET("", handler.GetIndex)
 
-	au.POST("/login", handler.PostAuthLogin)
+	r.GET("/movie/schedule/:id/:date", handler.GetScheduleTimeInDate)
 
+	e.POST("/auth/login", handler.PostAuthLogin)
 	e.GET("/login", handler.GetLoginPage)
+	e.GET("/register", handler.GetCreateAccountPage)
+	r.GET("/logout", handler.GetLogout)
 
 	e.Static("/static", "static")
 

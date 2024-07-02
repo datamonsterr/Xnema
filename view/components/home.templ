@@ -11,17 +11,7 @@ templ Home() {
 		<div class="w-full text-xl flex justify-center">
 			<p>News</p>
 		</div>
-		<div class="relative w-full overflow-hidden">
-			<button id="newsLeftBtn" class="absolute left-0 top-1/2 z-10 text-5xl">
-				❮
-			</button>
-			<div id="news" class="flex transition-transform">
-				<div hx-get="/home/news" hx-trigger="load" hx-swap="outerHTML" hx-target="this"></div>
-			</div>
-			<button id="newsRightBtn" class="absolute right-0 top-1/2 z-10 text-5xl">
-				❯
-			</button>
-		</div>
+		<div hx-get="/home/news" hx-trigger="load" hx-swap="innerHTML" hx-target="this" id="newsContainer"></div>
 	</div>
 	<div class="relative flex justify-between mb-10 mt-10 h-fit w-screen">
 		<div class="titleBox w-1/3"></div>
@@ -29,13 +19,11 @@ templ Home() {
 		<div class="titleBox w-1/3"></div>
 	</div>
 	<div class="w-full relative px-10">
-		<div class="flex items-center overflow-x-scroll w-full h-full">
+		<div class="flex items-center w-full h-full">
 			<div class="absolute left-0 z-10 text-5xl cursor-none select-none">
 				❮
 			</div>
-			<div id="movieSelection" class="flex transition-transform duration-300">
-				<div hx-get="/home/movies" hx-trigger="load" hx-swap="outerHTML" hx-target="this"></div>
-			</div>
+			<div hx-get="/home/movies" hx-trigger="load" hx-swap="outerHTML" hx-target="this"></div>
 			<div class="absolute right-0 z-10 text-5xl cursor-none select-none">
 				❯
 			</div>

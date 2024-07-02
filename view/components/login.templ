@@ -1,29 +1,43 @@
 package components;
 
-import "example.com/test/view/common"
-
-templ LoginSuccess(username string, password string) {
-	<div>
-		<h1 class="text-red-500">Login Success</h1>
-		<p>Username: { username }</p>
-		<p>Password: { password }</p>
-	</div>
-}
-
 templ Login() {
-	<div class="w-1/3 px-20 h-1/2 pb-40 flex flex-col justify-evenly pt-40">
+	<form id="login-form" class="w-2/3 px-20 h-1/2 pb-40 flex flex-col justify-evenly pt-40">
 		<div>
-			@common.InputText("username", "Username", false)
+			<div>
+				<label for="account" class="block text-xl font-medium mb-4">Email or username</label>
+				<input
+					type="text"
+					id="username"
+					name="username"
+					class="block w-full p-2 text-xl bg-base-200 border-none text-white"
+				/>
+			</div>
 			<div class="flex justify-end mt-2">
-				<span>Create a new account?</span>
+				<div class="hover:underline hover:text-white cursor-pointer" hx-get="/register" hx-target="#container" hx-swap="innerHTML" hx-trigger="click">Create a new account?</div>
 			</div>
 		</div>
 		<div>
-			@common.InputText("password", "Password", true)
+			<div>
+				<label for="account" class="block text-xl font-medium mb-4">Password</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					class="block w-full p-2 text-xl bg-base-200 border-none text-white"
+				/>
+			</div>
 			<div class="flex justify-end mt-2">
-				<span>Forgot Password? </span>
+				<div class="hover:underline hover:text-white cursor-pointer">Forgot Password?</div>
 			</div>
 		</div>
-		<div class="btn btn-primary mt-4 text-xl" onclick="btnLoginPressed()">Login</div>
-	</div>
+		<button
+			type="submit"
+			class="btn btn-primary mt-4 text-xl"
+			hx-post="/auth/login"
+			hx-params="*"
+			hx-target="body"
+			hx-swap="innerHTML"
+			onclick="submitLogin(event)"
+		>Login</button>
+	</form>
 }

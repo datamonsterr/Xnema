@@ -3,6 +3,8 @@ package components
 import "fmt"
 import "strings"
 import "example.com/test/db"
+import "time"
+import "example.com/test/models"
 
 func isAvailable(i int, j int) bool {
 	if i == j+1 {
@@ -29,20 +31,20 @@ templ DateSelection(date string, movieId int) {
 	<label class="bg-slate-600 text-lg w-fit p-3 rounded-md cursor-pointer has-[:checked]:bg-cyan-200 has-[:checked]:text-black">
 		<div class="">{ getDate(date, 1) }</div>
 		<div class="">{ getDate(date, 2) }</div>
-		<input type="radio" name="date" hx-trigger="change" hx-get={ fmt.Sprintf("/movie/schedule/%d/%s", movieId, date) } hx-target="#time-selection" hx-swap="innerHTML" data-date={ date }/>
+		<input type="radio" name="date" hx-trigger="change" hx-get={ fmt.Sprintf("restricted/movie/schedule/%d/%s", movieId, date) } hx-target="#time-selection" hx-swap="innerHTML" data-date={ date }/>
 	</label>
 }
 
-templ TimeRadio(time string, id string) {
+templ TimeRadio(id int, time string) {
 	<label class="has-[:checked]:bg-cyan-300 has-[:checked]:text-black btn">
 		{ time }
-		<input type="radio" class="radio-lg" name="time" data-time={ id }/>
+		<input type="radio" class="radio-lg" name="time" data-time={ time } id={ fmt.Sprintf("%d", id) }/>
 	</label>
 }
 
-templ TimeSelection(times []string) {
-	for _, time := range times {
-		@TimeRadio(time, time)
+templ TimeSelection(schedules map[int]string) {
+	for key, value:= range schedules {
+		@TimeRadio(key, value)
 	}
 }
 
@@ -57,13 +59,13 @@ script CalcPrice() {
 }
 
 templ SeatSelection(seatId string, disabled bool) {
-	<label for={ seatId } class={ fmt.Sprintf("cursor-pointer w-full h-full %s has-[:checked]:bg-green-400", getBg(disabled)) }>
+	<label for={ seatId } class={ fmt.Sprintf("cursor-pointer w-full h-full %s has-[:checked]:bg-green-400 ml-5", getBg(disabled)) }>
 		<div class="inline-block text-center w-full min-h-5"></div>
 		<input type="checkbox" name="tickets" id={ seatId } disabled?={ disabled } onchange={ CalcPrice() }/>
 	</label>
 }
 
-script Book(movieID int) {
+script Book(movieID int, userID int) {
 	let seats = document.querySelectorAll("input[name=tickets]:checked");
 	if(seats.length == 0) {
 		alert("Please select at least one seat");
@@ -80,21 +82,33 @@ script Book(movieID int) {
 		alert("Please select a time");
 		return;
 	}
+	seatsArr =[]; 
+	for(seat of seats) {
+		seatsArr.push(seat.id);
+	}
 
-	fetch("/movie/book", {
+	fetch("/restricted/movie/book", {
 		method: "POST",
-		contentType: "application/json",
+		headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": `Bearer ${getCookie("token")}` },
 		body: JSON.stringify({
-			"seats": Array.from(seats).map(seat => seat.id),
-			"date": date.dataset.date,
-			"time": time.dataset.time,
-			"movie_id": movieID
+			"seats": seatsArr,
+			"schedule_id": time.id,
+			"movie_id": movieID,
+			"user_id": userID,
 		})
-	})
+	}).then(
+		response => {
+				return response.text();
+		}
+	).then(
+		data => {
+			alert(data);
+		}
+	);
 }
 
-templ SeatEditor(dates []string, movie db.Movie) {
-	<div class="bg-black w-full min-h-full flex justify-evenly" id="seat-editor">
+templ SeatEditor(dates []time.Time, movie db.Movie) {
+	<div class="bg-black w-full h-full flex justify-evenly" id="seat-editor">
 		<div class="h-fit w-8/12">
 			<div class="font-bold text-xl flex justify-between">
 				{ movie.Title.String }
@@ -112,21 +126,34 @@ templ SeatEditor(dates []string, movie db.Movie) {
 					}
 				</div>
 				<div class="">
-					<div class="flex justify-evenly mt-5 mb-5">
+					<div class="flex justify-evenly mt-5 mb-5 overflow-x-auto space-x-5">
 						for _, v := range dates {
-							@DateSelection(v, int(movie.MovieID))
+							@DateSelection(v.Format("2006-Jan-02"), int(movie.MovieID))
 						}
 					</div>
 					<div id="time-selection" class="flex justify-evenly max-h-20 min-h-20"></div>
 				</div>
 			</div>
 		</div>
-		<div class="flex justify-between w-4/12 px-10">
-			<div class="">
-				<span><span class="" id="tickets-count">0</span> Tickets </span>
-				<div class="" id="tickets-money">0</div>
+		<div class="flex flex-col items-center justify-between w-4/12 px-10 py-10 h-full">
+			<div>
+				<img src={ movie.Url.String } alt={ movie.Title.String } class="h-96"/>
 			</div>
-			<div class="btn" onclick={ Book(int(movie.MovieID)) }>Book</div>
+			<select className="select w-full max-w-xs">
+				<option disabled selected>Pick your favorite Simpson</option>
+				<option>Homer</option>
+				<option>Marge</option>
+				<option>Bart</option>
+				<option>Lisa</option>
+				<option>Maggie</option>
+			</select>
+			<div class="flex flex-col w-full">
+				<div class="flex justify-between">
+					<span><span class="" id="tickets-count">0</span> Tickets </span>
+					<div class="" id="tickets-money">0</div>
+				</div>
+				<div class="btn" onclick={ Book(int(movie.MovieID), models.GetUserData(ctx).UserID) }>Book</div>
+			</div>
 		</div>
 	</div>
 }
