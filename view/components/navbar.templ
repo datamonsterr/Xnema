@@ -1,12 +1,17 @@
 package components;
 
+import "example.com/test/models"
+
 script ClickAvt() {
-	let profile = document.getElementById("profileMenu");
+	let profileMenu = document.getElementById("profileMenu");
 	console.log("Clicked");
 	profileMenu.classList.toggle("hidden");
 }
 
-templ Navbar(role string) {
+script Reload() {
+}
+
+templ Navbar() {
 	<style>
         nav {
 			z-index: 20;
@@ -20,7 +25,7 @@ templ Navbar(role string) {
     </style>
 	<nav class="w-full bg-base-100 pt-5 pb-3 px-16 text-xl text-white flex justify-between border-primary fixed top-0 left-0">
 		<div id="logo">
-			<span class="select-none cursor-pointer" hx-get="/home" hx-target="#container" hx-swap="innerHTML">Xnema</span>
+			<span class="select-none cursor-pointer" onclick="location.reload()">Xnema</span>
 		</div>
 		<div id="search-bar" class="w-1/3">
 			<label class="input input-bordered flex items-center gap-2  focus:border-white focus-within:border-white">
@@ -29,14 +34,15 @@ templ Navbar(role string) {
 			</label>
 		</div>
 		<div id="avatar" class="cursor-pointer">
-			if (role == "user") {
-				<div class="relative w-20 h-10">
+			if (models.GetUserData(ctx).UserRole == "user") {
+				<div id="profile" class="relative w-20 h-10">
 					<img src="https://avatars.dicebear.com/api/avataaars/1234.svg" class="w-10 h-10 rounded-full" onclick={ ClickAvt() }/>
 					<div id="profileMenu" class="bg-base-300 min-w-fit h-fit hidden absolute z-50 right-0 top-12 px-10 py-5">
 						<div class="hover:text-primary" hx-get="/restricted/logout" hx-target="body" hx-trigger="click" hx-swap="innerHTML">Logout</div>
 						<div class="min-w-40 hover:text-primary">View Account</div>
 					</div>
 				</div>
+				<span id="non-profile" class="hidden hover:underline select-none" hx-get="/login" hx-swap="innerHTML" hx-target="#container">Login</span>
 			} else {
 				<span class="hover:underline select-none" hx-get="/login" hx-swap="innerHTML" hx-target="#container">Login</span>
 			}

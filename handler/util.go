@@ -9,17 +9,14 @@ import (
 	"example.com/test/db"
 	"example.com/test/models"
 	"github.com/a-h/templ"
+	"github.com/golang-jwt/jwt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 )
 
 func RenderTemplComponent(c echo.Context, component templ.Component) error {
-	return component.Render(context.Background(), c.Response().Writer)
-}
-
-func RenderTemplComponentWithData(c echo.Context, component templ.Component, data interface{}) error {
-	ctx := context.WithValue(context.Background(), models.UserDataCtxK, data)
+	ctx := context.WithValue(context.Background(), models.UserDataCtxK, GetCtxData(c))
 	return component.Render(ctx, c.Response().Writer)
 }
 
@@ -56,4 +53,31 @@ func StoPGdate(s string) pgtype.Date {
 
 	pdate := pgtype.Date{Time: date, Valid: true}
 	return pdate
+}
+
+func StoPGString(s string) pgtype.Text {
+	return pgtype.Text{Valid: true, String: s}
+}
+
+func GetCtxData(c echo.Context) models.CtxData {
+	cookie, err := c.Cookie("token")
+	defaultData := models.CtxData{UserID: -1, UserRole: "guest"}
+	if err != nil {
+		return defaultData
+	}
+
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwtCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte("secret"), nil
+	})
+	if err != nil {
+		return defaultData
+	}
+
+	claims, ok := token.Claims.(*jwtCustomClaims)
+	if !ok || !token.Valid {
+		return defaultData
+	}
+	data := models.CtxData{UserID: claims.UserID, UserRole: claims.Role}
+	log.Println("Authorized: " + claims.Role)
+	return data
 }

@@ -1785,10 +1785,6 @@ html {
   margin-bottom: 1.25rem;
 }
 
-.ml-10 {
-  margin-left: 2.5rem;
-}
-
 .ml-5 {
   margin-left: 1.25rem;
 }
@@ -1903,6 +1899,10 @@ html {
   width: 5rem;
 }
 
+.w-3\/12 {
+  width: 25%;
+}
+
 .w-4 {
   width: 1rem;
 }
@@ -1930,10 +1930,6 @@ html {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-3\/12 {
-  width: 25%;
 }
 
 .min-w-40 {

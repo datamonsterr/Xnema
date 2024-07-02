@@ -37,6 +37,7 @@ func main() {
 	r.GET("/movie/schedule/:id/:date", handler.GetScheduleTimeInDate)
 
 	e.POST("/auth/login", handler.PostAuthLogin)
+	e.POST("/auth/register", handler.PostCreateAccount)
 	e.GET("/login", handler.GetLoginPage)
 	e.GET("/register", handler.GetCreateAccountPage)
 	r.GET("/logout", handler.GetLogout)

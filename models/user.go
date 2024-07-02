@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-type UserData struct {
+type CtxData struct {
 	UserID   int
 	UserRole string
 }
@@ -13,11 +13,9 @@ type ContextKey string
 
 var UserDataCtxK ContextKey = "data"
 
-func GetUserData(ctx context.Context) UserData {
-	if data, ok := ctx.Value(UserDataCtxK).(UserData); ok {
+func GetUserData(ctx context.Context) CtxData {
+	if data, ok := ctx.Value(UserDataCtxK).(CtxData); ok {
 		return data
 	}
-	return UserData{}
+	return CtxData{}
 }
-
-var TotalSlides int
