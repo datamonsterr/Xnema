@@ -1,10 +1,8 @@
 package components
 
 import "fmt"
-import "strings"
 import "example.com/test/db"
 import "time"
-import "example.com/test/models"
 
 func isAvailable(i int, j int) bool {
 	if i == j+1 {
@@ -23,30 +21,6 @@ func getBg(disabled bool) string {
 	return bg
 }
 
-func getDate(timeStr string, i int) string {
-	return strings.Split(timeStr, "-")[i]
-}
-
-templ DateSelection(date string, movieId int) {
-	<label class="bg-slate-600 text-lg w-fit p-3 rounded-md cursor-pointer has-[:checked]:bg-cyan-200 has-[:checked]:text-black">
-		<div class="">{ getDate(date, 1) }</div>
-		<div class="">{ getDate(date, 2) }</div>
-		<input type="radio" name="date" hx-trigger="change" hx-get={ fmt.Sprintf("restricted/movie/schedule/%d/%s", movieId, date) } hx-target="#time-selection" hx-swap="innerHTML" data-date={ date }/>
-	</label>
-}
-
-templ TimeRadio(id int, time string) {
-	<label class="has-[:checked]:bg-cyan-300 has-[:checked]:text-black btn">
-		{ time }
-		<input type="radio" class="radio-lg" name="time" data-time={ time } id={ fmt.Sprintf("%d", id) }/>
-	</label>
-}
-
-templ TimeSelection(schedules map[int]string) {
-	for key, value:= range schedules {
-		@TimeRadio(key, value)
-	}
-}
 
 script CalcPrice() {
 	let seats = document.querySelectorAll("input[name=tickets]:checked");
@@ -66,22 +40,6 @@ templ SeatSelection(seatId string, disabled bool) {
 }
 
 script Book(movieID int, userID int) {
-	let seats = document.querySelectorAll("input[name=tickets]:checked");
-	if(seats.length == 0) {
-		alert("Please select at least one seat");
-		return;
-	}
-	let date = document.querySelector("input[name=date]:checked");
-	if(date == null) {
-		alert("Please select a date");
-		return;
-	}
-
-	let time = document.querySelector("input[name=time]:checked");
-	if(time == null) {
-		alert("Please select a time");
-		return;
-	}
 	seatsArr =[]; 
 	for(seat of seats) {
 		seatsArr.push(seat.id);
@@ -93,8 +51,6 @@ script Book(movieID int, userID int) {
 		body: JSON.stringify({
 			"seats": seatsArr,
 			"schedule_id": time.id,
-			"movie_id": movieID,
-			"user_id": userID,
 		})
 	}).then(
 		response => {
@@ -125,34 +81,6 @@ templ SeatEditor(dates []time.Time, movie db.Movie) {
 						@SeatSelection(fmt.Sprintf("%d", i), false)
 					}
 				</div>
-				<div class="">
-					<div class="flex justify-evenly mt-5 mb-5 overflow-x-auto space-x-5">
-						for _, v := range dates {
-							@DateSelection(v.Format("2006-Jan-02"), int(movie.MovieID))
-						}
-					</div>
-					<div id="time-selection" class="flex justify-evenly max-h-20 min-h-20"></div>
-				</div>
-			</div>
-		</div>
-		<div class="flex flex-col items-center justify-between w-4/12 px-10 py-10 h-full">
-			<div>
-				<img src={ movie.Url.String } alt={ movie.Title.String } class="h-96"/>
-			</div>
-			<select className="select w-full max-w-xs">
-				<option disabled selected>Pick your favorite Simpson</option>
-				<option>Homer</option>
-				<option>Marge</option>
-				<option>Bart</option>
-				<option>Lisa</option>
-				<option>Maggie</option>
-			</select>
-			<div class="flex flex-col w-full">
-				<div class="flex justify-between">
-					<span><span class="" id="tickets-count">0</span> Tickets </span>
-					<div class="" id="tickets-money">0</div>
-				</div>
-				<div class="btn" onclick={ Book(int(movie.MovieID), models.GetUserData(ctx).UserID) }>Book</div>
 			</div>
 		</div>
 	</div>

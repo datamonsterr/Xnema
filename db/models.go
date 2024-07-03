@@ -8,6 +8,12 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Bill struct {
+	BillID   int32
+	UserID   pgtype.Int4
+	TicketID []int32
+}
+
 type Cast struct {
 	IDCast    int32
 	Character pgtype.Text
@@ -18,6 +24,15 @@ type Cast struct {
 type Cinema struct {
 	CinemaID int32
 	Name     pgtype.Text
+}
+
+type Coupon struct {
+	ID                 int32
+	Code               string
+	Description        pgtype.Text
+	DiscountPercentage pgtype.Int4
+	ValidFrom          pgtype.Date
+	ExpiresAt          pgtype.Date
 }
 
 type Crew struct {
@@ -70,18 +85,13 @@ type Schedule struct {
 	ScheduleMovieDate  pgtype.Date
 	ScheduleMovieStart pgtype.Time
 	MovieID            pgtype.Int4
+	RoomID             pgtype.Int4
+	CinemaID           pgtype.Int4
 }
 
 type Seat struct {
 	SeatID int32
 	RoomID pgtype.Int4
-}
-
-type Seatschedule struct {
-	SeatID     pgtype.Int4
-	ScheduleID pgtype.Int4
-	Status     pgtype.Text
-	Price      pgtype.Int4
 }
 
 type Ticket struct {

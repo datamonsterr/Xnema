@@ -3,7 +3,7 @@ module example.com/test
 go 1.21.7
 
 require (
-	github.com/a-h/templ v0.2.598
+	github.com/a-h/templ v0.2.731
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/jackc/pgx/v5 v5.6.0

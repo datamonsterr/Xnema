@@ -32,6 +32,7 @@ func main() {
 	r.POST("/movie/book", handler.PostMovieBook)
 
 	r.GET("/movie/:id/booking", handler.GetBookingView)
+	r.GET("/movie/:id/schedule", handler.GetScheduleView)
 	r.GET("", handler.GetIndex)
 
 	r.GET("/movie/schedule/:id/:date", handler.GetScheduleTimeInDate)

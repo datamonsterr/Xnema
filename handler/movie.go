@@ -34,7 +34,7 @@ func GetBookingView(c echo.Context) error {
 		datesArr[i] = date.Time
 	}
 
-	return RenderTemplComponent(c, components.SeatEditor(datesArr, movie))
+	return RenderTemplComponent(c, components.BookingView(movie, datesArr))
 }
 
 func GetScheduleTimeInDate(c echo.Context) error {
@@ -102,4 +102,17 @@ func PostMovieBook(c echo.Context) error {
 		log.Fatal("ticker id: ", r)
 	}
 	return c.String(200, "Booked successfully")
+}
+
+func GetScheduleView(c echo.Context) error {
+	// ctx, queries := InitDB()
+	// movieID := StoPGInt4(c.Param("id"))
+
+	// schedules, err := queries.GetSchedule(ctx, movieID)
+	// if err != nil {
+	// 	return RenderTemplComponent(c, components.ErrorPage("No schedule found"))
+	// }
+
+	return RenderTemplComponent(c, components.Schedule())
+
 }
