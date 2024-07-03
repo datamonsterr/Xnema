@@ -1952,10 +1952,6 @@ details.collapse summary::-webkit-details-marker {
   display: none;
 }
 
-.h-1\/2 {
-  height: 50%;
-}
-
 .h-10 {
   height: 2.5rem;
 }
@@ -1981,21 +1977,12 @@ details.collapse summary::-webkit-details-marker {
   max-height: 5rem;
 }
 
-.max-h-fit {
-  max-height: -moz-fit-content;
-  max-height: fit-content;
-}
-
 .min-h-20 {
   min-height: 5rem;
 }
 
 .min-h-5 {
   min-height: 1.25rem;
-}
-
-.min-h-full {
-  min-height: 100%;
 }
 
 .min-h-screen {
@@ -2032,6 +2019,10 @@ details.collapse summary::-webkit-details-marker {
 
 .w-52 {
   width: 13rem;
+}
+
+.w-7\/12 {
+  width: 58.333333%;
 }
 
 .w-8\/12 {
@@ -2126,6 +2117,12 @@ details.collapse summary::-webkit-details-marker {
   --tw-space-x-reverse: 0;
   margin-right: calc(1.25rem * var(--tw-space-x-reverse));
   margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
 }
 
 .overflow-hidden {
@@ -2344,7 +2341,8 @@ details.collapse summary::-webkit-details-marker {
   margin: 0;
 }
 
-#seat-editor input {
+input[type="checkbox"],
+input[type="radio"] {
   display: none;
 }
 

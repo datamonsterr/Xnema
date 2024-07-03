@@ -22,7 +22,8 @@
   margin: 0;
 }
 
-#seat-editor input {
+input[type="checkbox"],
+input[type="radio"] {
   display: none;
 }
 
