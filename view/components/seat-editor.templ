@@ -1,8 +1,9 @@
 package components
 
-import "fmt"
-import "example.com/test/db"
-import "time"
+import (
+	"example.com/test/db"
+	"fmt"
+)
 
 func isAvailable(i int, j int) bool {
 	if i == j+1 {
@@ -20,7 +21,6 @@ func getBg(disabled bool) string {
 	}
 	return bg
 }
-
 
 script CalcPrice() {
 	let seats = document.querySelectorAll("input[name=tickets]:checked");
@@ -63,7 +63,7 @@ script Book(movieID int, userID int) {
 	);
 }
 
-templ SeatEditor(dates []time.Time, movie db.Movie) {
+templ SeatEditor(movie db.Movie) {
 	<div class="bg-black w-full h-full flex justify-evenly" id="seat-editor">
 		<div class="h-fit w-8/12">
 			<div class="font-bold text-xl flex justify-between">
