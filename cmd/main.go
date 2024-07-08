@@ -24,18 +24,20 @@ func main() {
 	r.Use(echojwt.WithConfig(config))
 
 	e.GET("", handler.GetIndex)
+	r.GET("", handler.GetIndex)
 
 	e.GET("/home", handler.GetHome)
 	e.GET("/home/news", handler.GetNews)
 	e.GET("/home/movies", handler.GetMovieSelection)
 	e.GET("/movie/:id/info", handler.GetMovieInfo)
-	r.POST("/movie/book", handler.PostMovieBook)
 
-	r.GET("/movie/:id/booking", handler.GetBookingView)
-	r.GET("/movie/:id/schedule", handler.GetScheduleView)
-	r.GET("", handler.GetIndex)
-
-	r.GET("/movie/schedule/:id/:date", handler.GetScheduleTimeInDate)
+	// r.GET("/movie/:id/schedule", handler.GetScheduleView)
+	// r.GET("/movie/schedule/:id/:date", handler.GetScheduleTimeInDate)
+	r.GET("/booking/:id", handler.GetBookingView)
+	r.GET("/booking/cinema", handler.GetScheduleCinema)
+	r.GET("/booking/time", handler.GetScheduleTime)
+	r.GET("/booking/seat", handler.GetScheduleSeat)
+	r.POST("/booking/ticket", handler.PostBookTicket)
 
 	e.POST("/auth/login", handler.PostAuthLogin)
 	e.POST("/auth/register", handler.PostCreateAccount)

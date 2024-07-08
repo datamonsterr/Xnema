@@ -5,13 +5,6 @@ import (
 	"fmt"
 )
 
-func isAvailable(i int, j int) bool {
-	if i == j+1 {
-		return false
-	}
-	return true
-}
-
 func getBg(disabled bool) string {
 	var bg string
 	if disabled {
@@ -22,66 +15,67 @@ func getBg(disabled bool) string {
 	return bg
 }
 
-script CalcPrice() {
+script CalcPrice(price int) {
 	let seats = document.querySelectorAll("input[name=tickets]:checked");
 	let ticketsCount = document.getElementById("tickets-count");
 	let ticketsMoney = document.getElementById("tickets-money");
 	let count = seats.length;
-	let money = count * 5;
+	let money = count * price;
 	ticketsCount.innerText = count;
 	ticketsMoney.innerText = "$" + money;
 }
 
-templ SeatSelection(seatId string, disabled bool) {
-	<label for={ seatId } class={ fmt.Sprintf("cursor-pointer w-full h-full %s has-[:checked]:bg-green-400 ml-5", getBg(disabled)) }>
+templ SeatSelection(seatID string, disabled bool) {
+	<label for={ seatID } class={ fmt.Sprintf("cursor-pointer w-full h-full %s has-[:checked]:bg-green-400 ml-5", getBg(disabled)) }>
 		<div class="inline-block text-center w-full min-h-5"></div>
-		<input type="checkbox" name="tickets" id={ seatId } disabled?={ disabled } onchange={ CalcPrice() }/>
+		<input type="checkbox" disabled?={ disabled } onchange={ CalcPrice(5) } class="hidden seat" value={ seatID } name="seat" id={ seatID }/>
 	</label>
 }
 
-script Book(movieID int, userID int) {
-	seatsArr =[]; 
-	for(seat of seats) {
-		seatsArr.push(seat.id);
-	}
-
-	fetch("/restricted/movie/book", {
-		method: "POST",
-		headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": `Bearer ${getCookie("token")}` },
-		body: JSON.stringify({
-			"seats": seatsArr,
-			"schedule_id": time.id,
-		})
-	}).then(
-		response => {
-				return response.text();
-		}
-	).then(
-		data => {
-			alert(data);
-		}
-	);
-}
-
-templ SeatEditor(movie db.Movie) {
-	<div class="bg-black w-full h-full flex justify-evenly" id="seat-editor">
+templ SeatEditor(seats [][]db.GetSeatRow) {
+	<form class="bg-black w-full h-full flex flex-col items-center justify-between py-10" id="seat-editor">
 		<div class="h-fit w-8/12">
-			<div class="font-bold text-xl flex justify-between">
-				{ movie.Title.String }
+			<div class="flex justify-end">
+				<div class="item">Available</div>
+				<div class="item before:bg-slate-600">Booked</div>
+				<div class="item before:bg-green-300">Selected</div>
 			</div>
-			<div class="">
-				<div class="flex justify-end">
-					<div class="item">Available</div>
-					<div class="item before:bg-slate-600">Booked</div>
-					<div class="item before:bg-green-300">Selected</div>
-				</div>
-				<div class="bg-slate-600 mt-5 text-center text-white">Screen</div>
-				<div class="w-full h-full mt-5 grid gap-3 px-4" style="grid-template-columns: repeat(15, minmax(0, 1fr)); grid-template-rows: repeat(15, minmax(0,1fr))">
-					for i := 0; i < 15 * 15; i++ {
-						@SeatSelection(fmt.Sprintf("%d", i), false)
+			<div class="bg-slate-600 mt-5 text-center text-white">Screen</div>
+			<div class="w-full h-full mt-5 ">
+				for row, seatsInRow:= range seats {
+					if len(seatsInRow) > 0 {
+						<p>{ fmt.Sprintf("%c", row+65) }</p>
+						<div class="flex justify-evenly">
+							for _, seat := range seatsInRow {
+								@SeatSelection(fmt.Sprintf("%d", seat.SeatID), false)
+							}
+						</div>
 					}
+				}
+			</div>
+			// Book button section
+			<div class="flex justify-between w-full">
+				<div class="text-xl text-white font-medium">
+					<div class="text-2xl">
+						<span class="text-2xl" id="tickets-count">0</span> x tickets
+					</div>
+					<div class="text-2xl">
+						Total: 
+						<span class="text-2xl" id="tickets-money">$0</span>
+					</div>
+				</div>
+				<div class="flex justify-center mt-5">
+					<button
+						class="btn btn-primary"
+						type="button"
+						hx-post={ fmt.Sprintf("/restricted/booking/ticket?scheduleID=%d", seats[0][0].ScheduleID) }
+						hx-include=".seat"
+						hx-trigger="click"
+						hx-target="#container"
+						hx-swap="innerHTML"
+					>Book</button>
 				</div>
 			</div>
 		</div>
-	</div>
+	</form>
 }

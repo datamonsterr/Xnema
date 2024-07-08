@@ -22,11 +22,6 @@
   margin: 0;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
-  display: none;
-}
-
 .item {
   position: relative;
   margin-left: 2rem;

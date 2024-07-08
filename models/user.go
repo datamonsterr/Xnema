@@ -19,3 +19,8 @@ func GetUserData(ctx context.Context) CtxData {
 	}
 	return CtxData{}
 }
+
+type RoomTime struct {
+	Room  string
+	Times map[int]string
+}

@@ -95,6 +95,8 @@ CREATE TABLE Schedule (
 CREATE TABLE seat (
     seat_id SERIAL PRIMARY KEY,
     room_id INTEGER,
+    rowss CHAR(1),
+    columnss INTEGER,
     FOREIGN KEY (room_id) REFERENCES room (room_id)
 );
 
@@ -102,15 +104,14 @@ CREATE TABLE seat (
 CREATE TABLE ticket (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
-    movie_id INTEGER,
-    cinema_id INTEGER,
     schedule_id INTEGER,
     seat_id INTEGER,
+    totalprice INTEGER,
+    coupon INTEGER,
     FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (movie_id) REFERENCES movie (movie_id),
-    FOREIGN KEY (cinema_id) REFERENCES cinema (cinema_id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule (schedule_id),
-    FOREIGN KEY (seat_id) REFERENCES seat (seat_id)
+    FOREIGN KEY (seat_id) REFERENCES seat (seat_id),
+    FOREIGN KEY (coupon) REFERENCES coupons (id)
 );
 
 CREATE TABLE bill
@@ -129,3 +130,9 @@ CREATE TABLE coupons
     valid_from DATE,
     expires_at DATE
 );
+
+CREATE TABLE price (
+    price_id SERIAL PRIMARY KEY,
+    type VARCHAR,
+    price INTEGER
+)

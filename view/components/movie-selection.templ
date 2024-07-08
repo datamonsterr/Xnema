@@ -1,8 +1,10 @@
 package components
 
-import "fmt"
-import "example.com/test/db"
-import "example.com/test/models"
+import (
+	"example.com/test/db"
+	"example.com/test/models"
+	"fmt"
+)
 
 script HoverOut(id int) {
 	let poster = document.getElementById(`poster-${id}`);
@@ -26,7 +28,7 @@ templ Poster(imgUrl string, alt string, id int) {
 				<div class="flex justify-evenly text-xl h-fit pb-10">
 					<div class="btn btn-secondary text-white w-4/12" hx-get={ fmt.Sprintf("/movie/%d/info", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Details</div>
 					if models.GetUserData(ctx).UserRole == "user" {
-						<div class="btn btn-primary w-4/12" hx-get={ fmt.Sprintf("restricted/movie/%d/booking", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Booking</div>
+						<div class="btn btn-primary w-4/12" hx-get={ fmt.Sprintf("restricted/booking/%d", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Booking</div>
 					}
 				</div>
 			</div>

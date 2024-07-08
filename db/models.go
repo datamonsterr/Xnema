@@ -74,6 +74,12 @@ type MovieJoinGerne struct {
 	IDGerne pgtype.Int4
 }
 
+type Price struct {
+	PriceID int32
+	Type    pgtype.Text
+	Price   pgtype.Int4
+}
+
 type Room struct {
 	RoomID   int32
 	CinemaID pgtype.Int4
@@ -90,17 +96,19 @@ type Schedule struct {
 }
 
 type Seat struct {
-	SeatID int32
-	RoomID pgtype.Int4
+	SeatID   int32
+	RoomID   pgtype.Int4
+	Rowss    pgtype.Text
+	Columnss pgtype.Int4
 }
 
 type Ticket struct {
 	ID         int32
 	UserID     pgtype.Int4
-	MovieID    pgtype.Int4
-	CinemaID   pgtype.Int4
 	ScheduleID pgtype.Int4
 	SeatID     pgtype.Int4
+	Totalprice pgtype.Int4
+	Coupon     pgtype.Int4
 }
 
 type User struct {

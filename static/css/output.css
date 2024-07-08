@@ -1801,11 +1801,6 @@ details.collapse summary::-webkit-details-marker {
   width: 320px;
 }
 
-[type="radio"].radio-lg {
-  height: 2rem;
-  width: 2rem;
-}
-
 .avatar.online:before {
   content: "";
   position: absolute;
@@ -1904,10 +1899,6 @@ details.collapse summary::-webkit-details-marker {
   margin-bottom: 1rem;
 }
 
-.mb-5 {
-  margin-bottom: 1.25rem;
-}
-
 .ml-5 {
   margin-left: 1.25rem;
 }
@@ -1944,10 +1935,6 @@ details.collapse summary::-webkit-details-marker {
   display: flex;
 }
 
-.grid {
-  display: grid;
-}
-
 .hidden {
   display: none;
 }
@@ -1973,16 +1960,17 @@ details.collapse summary::-webkit-details-marker {
   height: 100vh;
 }
 
-.max-h-20 {
-  max-height: 5rem;
-}
-
-.min-h-20 {
-  min-height: 5rem;
+.max-h-fit {
+  max-height: -moz-fit-content;
+  max-height: fit-content;
 }
 
 .min-h-5 {
   min-height: 1.25rem;
+}
+
+.min-h-full {
+  min-height: 100%;
 }
 
 .min-h-screen {
@@ -2040,6 +2028,14 @@ details.collapse summary::-webkit-details-marker {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
+.w-96 {
+  width: 24rem;
 }
 
 .min-w-40 {
@@ -2109,20 +2105,10 @@ details.collapse summary::-webkit-details-marker {
   gap: 0.5rem;
 }
 
-.gap-3 {
-  gap: 0.75rem;
-}
-
 .space-x-5 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(1.25rem * var(--tw-space-x-reverse));
   margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
-.space-y-5 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
 }
 
 .overflow-hidden {
@@ -2221,11 +2207,6 @@ details.collapse summary::-webkit-details-marker {
   padding-right: 5rem;
 }
 
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
@@ -2234,6 +2215,11 @@ details.collapse summary::-webkit-details-marker {
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }
 
 .py-5 {
@@ -2265,6 +2251,11 @@ details.collapse summary::-webkit-details-marker {
   text-align: center;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -2291,6 +2282,10 @@ details.collapse summary::-webkit-details-marker {
 
 .font-medium {
   font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .tracking-widest {
@@ -2339,11 +2334,6 @@ details.collapse summary::-webkit-details-marker {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  display: none;
 }
 
 .item {
@@ -2435,11 +2425,6 @@ input[type="radio"] {
 .has-\[\:checked\]\:bg-cyan-200:has(:checked) {
   --tw-bg-opacity: 1;
   background-color: rgb(165 243 252 / var(--tw-bg-opacity));
-}
-
-.has-\[\:checked\]\:bg-cyan-300:has(:checked) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(103 232 249 / var(--tw-bg-opacity));
 }
 
 .has-\[\:checked\]\:bg-green-400:has(:checked) {
