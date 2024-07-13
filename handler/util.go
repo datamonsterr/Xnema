@@ -25,9 +25,10 @@ func InitDB() (context.Context, *db.Queries) {
 	conn, err := pgx.Connect(ctx, "postgresql://root:1234@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
 		log.Println("Database: Cannot connect.")
+		log.Fatal(err)
 	}
 	if err := conn.Ping(ctx); err != nil {
-		log.Println("Database: Cannot connect.")
+		log.Println("Database: Ping to DB and did not get anything in return.")
 	}
 	queries := db.New(conn)
 

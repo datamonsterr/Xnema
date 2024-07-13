@@ -4,12 +4,18 @@ import (
 	"log"
 
 	"example.com/test/handler"
+	"github.com/joho/godotenv"
 	echojwt "github.com/labstack/echo-jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Godotenv cannot load, err: %v", err)
+	}
+
 	e := echo.New()
 	r := e.Group("/restricted")
 
