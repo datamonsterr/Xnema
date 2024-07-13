@@ -129,7 +129,7 @@ func PostCreateAccount(c echo.Context) error {
 	userId, err := queries.CreateUser(ctx, params)
 	if err != nil {
 		log.Println("PostCreateAccount: Cannot insert to DB. Err " + err.Error())
-		return c.String(200, "User created successfully")
+		return c.String(200, "Cannot create account due to database issues")
 	}
 	log.Printf("PostCreateAccount: User created with ID %d", userId)
 

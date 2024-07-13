@@ -2,7 +2,9 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -22,7 +24,12 @@ func RenderTemplComponent(c echo.Context, component templ.Component) error {
 
 func InitDB() (context.Context, *db.Queries) {
 	ctx := context.Background()
-	conn, err := pgx.Connect(ctx, "postgresql://root:1234@localhost:5432/postgres?sslmode=disable")
+	var (
+		user     = os.Getenv("POSTGRES_USER")
+		password = os.Getenv("POSTGRES_PASSWORD")
+		database = os.Getenv("POSTGRES_DATABASE")
+	)
+	conn, err := pgx.Connect(ctx, fmt.Sprintf("postgresql://%s:%s@localhost:5432/%s?sslmode=disable", user, password, database))
 	if err != nil {
 		log.Println("Database: Cannot connect.")
 		log.Fatal(err)
