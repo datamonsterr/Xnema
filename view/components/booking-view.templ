@@ -1,0 +1,66 @@
+package components
+
+import (
+	"example.com/test/db"
+	"example.com/test/models"
+	"fmt"
+	"strings"
+	"time"
+)
+
+func getDate(timeStr string, i int) string {
+	return strings.Split(timeStr, "-")[i]
+}
+
+templ DateSelection(date string, movieId int) {
+	<label class="bg-slate-600 text-lg w-fit p-3 rounded-md cursor-pointer has-[:checked]:bg-cyan-200 has-[:checked]:text-black">
+		<div class="">{ getDate(date, 1) }</div>
+		<div class="">{ getDate(date, 2) }</div>
+		<input type="radio" name="date" hx-trigger="change" hx-get={ fmt.Sprintf("restricted/booking/cinema?movieID=%d&date=%s", movieId, date) } hx-target="#cinema-selection" hx-swap="innerHTML" class="hidden"/>
+	</label>
+}
+
+templ TimeBtn(id int, time string) {
+	<button
+		type="none"
+		class="btn btn-primary"
+		hx-get={ fmt.Sprintf("restricted/booking/seat?scheduleID=%d", id) }
+		hx-target="#container"
+		hx-swap="innerHTML"
+		hx-trigger="click"
+	>
+		{ time }
+	</button>
+}
+
+templ TimeSelection(schedules []models.RoomTime) {
+	for _, schedule := range schedules {
+		<p class="text-xl font-semibold mt-2 mb-3">{ schedule.Room }</p>
+		for key, value := range schedule.Times {
+			@TimeBtn(key, value)
+		}
+	}
+}
+
+templ CinemaSelection(cinemas map[int]string, movieID string, date string) {
+	for key, value:= range cinemas {
+		<div class="collapse bg-base-200 collapse-arrow">
+			<input type="radio" name="my-accordion-1"/>
+			<div class="collapse-title text-3xl font-bold">{ value }</div>
+			<div class="collapse-content" hx-get={ fmt.Sprintf("/restricted/booking/time?movieID=%s&date=%s&cinemaID=%d", movieID, date, key) } hx-target="this" hx-swap="innerHTML" hx-trigger="load">
+				<p>hello</p>
+			</div>
+		</div>
+	}
+}
+
+templ BookingView(movie db.Movie, dates []time.Time) {
+	<div class="min-h-full w-full bg-base-200 py-20 px-10">
+		<div class="flex overflow-x-auto space-x-5 py-5">
+			for _, v := range dates {
+				@DateSelection(v.Format("2006-Jan-02"), int(movie.MovieID))
+			}
+		</div>
+		<div id="cinema-selection"></div>
+	</div>
+}

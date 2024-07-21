@@ -1,10 +1,13 @@
 package view
 
-import "example.com/test/view/components"
+import (
+	"example.com/test/models"
+	"example.com/test/view/components"
+)
 
 templ Index() {
 	<!DOCTYPE html>
-	<html lang="en" data-theme="xnema">
+	<html lang="en" data-theme="xnema" hx-boost="true">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -24,10 +27,16 @@ templ Index() {
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 			<link href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap" rel="stylesheet"/>
 		</head>
-		<body class="relative max-w-screen min-h-screen max-h-fit bg-base-100 flex flex-col justify-center items-center">
+		<body class="relative max-w-screen min-h-screen h-screen max-h-fit bg-base-100 flex flex-col justify-center items-center">
 			@components.Navbar()
-			<div id="container" class="bg-base-100 flex flex-col items-center w-8/12 min-h-full">
-				@components.Home()
+			<div id="container" class="bg-base-100 flex flex-col items-center w-8/12 min-h-screen">
+				if models.GetUserData(ctx).UserRole == "user" {
+					@components.Home()
+				} else if models.GetUserData(ctx).UserRole == "admin" {
+					@components.AdminHome()
+				} else {
+					@components.Home()
+				}
 			</div>
 			// <div class="absolute bottom-0 w-full bg-primary text-black">{  models.GetUserData(ctx).UserRole }</div>
 		</body>

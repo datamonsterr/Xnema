@@ -84,37 +84,55 @@ CREATE TABLE Schedule (
     schedule_movie_date DATE,
     schedule_movie_start TIME,
     movie_id INTEGER,
-    FOREIGN KEY (movie_id) REFERENCES movie (movie_id)
+    room_id INTEGER,
+    cinema_id INTEGER,
+    FOREIGN KEY (movie_id) REFERENCES movie (movie_id),
+    FOREIGN KEY (cinema_id) REFERENCES cinema (cinema_id),
+    FOREIGN KEY (room_id) REFERENCES room (room_id)
 );
  
 -- Create table seat
 CREATE TABLE seat (
     seat_id SERIAL PRIMARY KEY,
     room_id INTEGER,
+    rowss CHAR(1),
+    columnss INTEGER,
     FOREIGN KEY (room_id) REFERENCES room (room_id)
 );
- 
--- Create table seatSchedule
-CREATE TABLE seatSchedule (
-    seat_id INTEGER,
-    schedule_id INTEGER,
-    status VARCHAR,
-    price INTEGER,
-    FOREIGN KEY (seat_id) REFERENCES seat (seat_id),
-    FOREIGN KEY (schedule_id) REFERENCES Schedule (schedule_id)
-);
- 
+
 -- Create table ticket
 CREATE TABLE ticket (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
-    movie_id INTEGER,
-    cinema_id INTEGER,
     schedule_id INTEGER,
     seat_id INTEGER,
+    cost INTEGER,
     FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (movie_id) REFERENCES movie (movie_id),
-    FOREIGN KEY (cinema_id) REFERENCES cinema (cinema_id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule (schedule_id),
     FOREIGN KEY (seat_id) REFERENCES seat (seat_id)
 );
+
+CREATE TABLE bill
+(
+    bill_id serial NOT NULL PRIMARY KEY,
+    user_id integer,
+    ticket_id integer[],
+    coupon_id integer,
+    FOREIGN KEY (coupon_id) REFERENCES coupons (id)
+);
+
+CREATE TABLE coupons
+(
+    id serial NOT NULL PRIMARY KEY,
+    code VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255),
+    discount_percentage INTEGER,
+    valid_from DATE,
+    expires_at DATE
+);
+
+CREATE TABLE price (
+    price_id SERIAL PRIMARY KEY,
+    type VARCHAR,
+    price INTEGER
+)

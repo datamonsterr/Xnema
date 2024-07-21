@@ -22,10 +22,6 @@
   margin: 0;
 }
 
-#seat-editor input {
-  display: none;
-}
-
 .item {
   position: relative;
   margin-left: 2rem;
