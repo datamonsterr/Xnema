@@ -1,0 +1,57 @@
+package components
+
+import (
+	"example.com/test/db"
+	"fmt"
+)
+
+var totalCost int32 = 0
+
+func addCost(cost int32) int32 {
+	totalCost += cost
+	return cost
+}
+
+func convertTime(s int64) string {
+	s = s / 1000000
+	hour := s / 60 / 60
+	min := s % 60
+	return fmt.Sprintf("%02d:%02d", hour, min)
+}
+
+templ Payment(movie db.Movie, schedule db.Schedule, tickets map[int]db.GetTicketSeatRow) {
+	<div class="w-2/3 h-full max-h-fit bg-base-100">
+		<div class="flex justify-between">
+			<div class="h-fit w-1/3">
+				<img src={ movie.Url.String } alt="image of movie" class="w-full"/>
+			</div>
+			<div class="flex flex-col justify-center items-center h-fit w-2/3">
+				<div class="text-3xl font-bold">{ movie.Title.String }</div>
+				<div class="text-xl font-medium">
+					<div>Release Date: { movie.ReleaseDate.Time.Format("01-January-2006") }</div>
+					<div>Language: { movie.OriginalLanguage.String }</div>
+				</div>
+				<div class="text-2xl font-bold">
+					<div>Date: { schedule.ScheduleMovieDate.Time.Format("01-January-2006") }</div>
+					<div>Time: { convertTime(schedule.ScheduleMovieStart.Microseconds) }</div>
+				</div>
+			</div>
+		</div>
+		for _, ticket := range tickets {
+			<div class="bg-base-200 text-white w-full flex justify-between px-10 py-5 text-3xl font-bold mt-5">
+				<div>{ fmt.Sprintf("%s%d", ticket.Rowss.String, ticket.Columnss.Int32) }</div>
+				<div>{ fmt.Sprintf("%v", addCost(ticket.Cost.Int32)) } </div>
+			</div>
+		}
+		<div class="w-full mt-10 tmb-10 ext-5xl font-bold flex justify-between ">
+			<div>Total: </div>
+			<div>{ fmt.Sprintf("%v", totalCost) } </div>
+		</div>
+		<button class="btn btn-primary w-full" hx-get="/booking/payment" hx-target="#container" hx-swap="innerHTML" hx-trigger="click">Pay</button>
+	</div>
+}
+
+// TODO
+templ QRCode() {
+	<img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="qr" class="w-full"/>
+}

@@ -29,12 +29,13 @@ templ Navbar() {
 		</div>
 		<div id="search-bar" class="w-1/3">
 			<label class="input input-bordered flex items-center gap-2  focus:border-white focus-within:border-white">
-				<input type="text" class="grow text-white" placeholder="Search"/>
+				<input type="text" class="grow text-white" placeholder="Search" hx-post="/movie/search" hx-target="#search-result"/>
+				<div id="search-result"></div>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#ffffff" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"></path></svg>
 			</label>
 		</div>
 		<div id="avatar" class="cursor-pointer">
-			if (models.GetUserData(ctx).UserRole == "user") {
+			if (models.GetUserData(ctx).UserRole == "user" || models.GetUserData(ctx).UserRole == "admin") {
 				<div id="profile" class="relative w-20 h-10">
 					<img src="https://avatars.dicebear.com/api/avataaars/1234.svg" class="w-10 h-10 rounded-full" onclick={ ClickAvt() }/>
 					<div id="profileMenu" class="bg-base-300 min-w-fit h-fit hidden absolute z-50 right-0 top-12 px-10 py-5">

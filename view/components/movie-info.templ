@@ -1,6 +1,9 @@
 package components
 
-import "example.com/test/db"
+import (
+	"example.com/test/db"
+	"fmt"
+)
 
 templ MovieInfo(movie db.Movie) {
 	<div class="flex justify-between w-full bg-base-200 py-10 px-20">
@@ -9,7 +12,7 @@ templ MovieInfo(movie db.Movie) {
 			<div>
 				<img src={ movie.Url.String } alt={ movie.Title.String } class="w-full"/>
 			</div>
-			<div class="btn btn-primary w-52 mt-5">Booking</div>
+			<div class="btn btn-primary w-52 mt-5" hx-get={ fmt.Sprintf("/restricted/booking/%d", movie.MovieID) } hx-target="#container" hx-swap="innerHTML" hx-trigger="click">Booking</div>
 		</div>
 		<div class="flex flex-col items-center w-8/12">
 			<div>

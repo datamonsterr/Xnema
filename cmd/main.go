@@ -18,6 +18,7 @@ func main() {
 
 	e := echo.New()
 	r := e.Group("/restricted")
+	a := e.Group("/admin")
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339} ${method} ${status} ${uri} ${error}\n",
@@ -26,8 +27,19 @@ func main() {
 	config := echojwt.Config{
 		NewClaimsFunc: handler.GetClaims,
 		SigningKey:    []byte("secret"),
+		ErrorHandler:  handler.AuthErrorHandler,
 	}
 	r.Use(echojwt.WithConfig(config))
+	// a.Use(echojwt.WithConfig(
+	// 	echojwt.Config{
+	// 		NewClaimsFunc: handler.GetClaims,
+	// 		SigningKey:    []byte("secret"),
+	// 	},
+	// ))
+
+	// Admin
+	a.GET("", handler.AdminGetHome)
+	a.GET("/movie", handler.AdminGetMovie)
 
 	e.GET("", handler.GetIndex)
 	r.GET("", handler.GetIndex)
@@ -44,6 +56,9 @@ func main() {
 	r.GET("/booking/time", handler.GetScheduleTime)
 	r.GET("/booking/seat", handler.GetScheduleSeat)
 	r.POST("/booking/ticket", handler.PostBookTicket)
+
+	r.GET("/booking/payment", handler.GetPayment)
+	r.POST("/booking/validate-payment", handler.PostValidatePayment)
 
 	e.POST("/auth/login", handler.PostAuthLogin)
 	e.POST("/auth/register", handler.PostCreateAccount)

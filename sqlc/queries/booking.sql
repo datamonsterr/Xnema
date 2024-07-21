@@ -19,24 +19,31 @@ FROM seat INNER JOIN schedule ON seat.room_id = schedule.room_id
 WHERE schedule_id = $1
 ORDER BY rowss;
 
--- name: GetSelectedSeat :many
-SELECT seat_id FROM ticket
-WHERE schedule_id = $1;
-
--- name: GetPrice :one
-SELECT price FROM price WHERE type = $1;
+-- name: GetRoomPrice :one
+SELECT price FROM schedule 
+INNER JOIN room ON room.room_id = schedule.room_id
+INNER JOIN price ON room.type = price.type
+WHERE schedule_id = $1 LIMIT 1;
 
 -- name: BookTicket :one
-INSERT INTO ticket (user_id, schedule_id, seat_id, totalprice, coupon)
-VALUES ($1, $2, $3, $4, $5)
+INSERT INTO ticket (user_id, schedule_id, seat_id, cost)
+VALUES ($1, $2, $3, $4)
 RETURNING ticket.id;
 
--- name: GetTicket :one
-SELECT schedule_movie_date, schedule_movie_start, seat.rowss, seat.columnss, movie.title, cinema.name, room.room_id, room.type, ticket.totalprice, movie.url 
+-- name: GetTicketSeat :one
+SELECT  seat.rowss, seat.columnss, ticket.cost
 FROM ticket 
-INNER JOIN schedule ON ticket.schedule_id = schedule.schedule_id
-INNER JOIN movie ON schedule.movie_id = movie.movie_id
-INNER JOIN cinema ON schedule.cinema_id = cinema.cinema_id
-INNER JOIN room ON schedule.room_id = room.room_id
 INNER JOIN seat ON ticket.seat_id = seat.seat_id
 WHERE ticket.id = $1;
+
+-- name: GetSchedule :one
+SELECT * FROM schedule WHERE schedule_id = $1;
+
+-- name: GetMovieBySchedule :one
+SELECT movie_id FROM schedule 
+WHERE schedule_id = $1;
+
+-- name: GetBookedSeat :many
+SELECT seat_id
+FROM ticket
+WHERE schedule_id = $1;

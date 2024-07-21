@@ -106,19 +106,19 @@ CREATE TABLE ticket (
     user_id INTEGER,
     schedule_id INTEGER,
     seat_id INTEGER,
-    totalprice INTEGER,
-    coupon INTEGER,
+    cost INTEGER,
     FOREIGN KEY (user_id) REFERENCES users (user_id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule (schedule_id),
-    FOREIGN KEY (seat_id) REFERENCES seat (seat_id),
-    FOREIGN KEY (coupon) REFERENCES coupons (id)
+    FOREIGN KEY (seat_id) REFERENCES seat (seat_id)
 );
 
 CREATE TABLE bill
 (
     bill_id serial NOT NULL PRIMARY KEY,
     user_id integer,
-    ticket_id integer[]
+    ticket_id integer[],
+    coupon_id integer,
+    FOREIGN KEY (coupon_id) REFERENCES coupons (id)
 );
 
 CREATE TABLE coupons

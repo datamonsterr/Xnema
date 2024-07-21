@@ -63,7 +63,21 @@ func GetScheduleSeat(c echo.Context) error {
 		seats[rune(seat.Rowss.String[0])-65] = append(seats[rune(seat.Rowss.String[0])-65], seat)
 	}
 
-	return RenderTemplComponent(c, components.SeatEditor(seats))
+	bookedSeats, err := queries.GetBookedSeat(ctx, scheduleID)
+	bookedSeatIDs := make([]int, len(bookedSeats))
+	if err != nil {
+		return err
+	}
+	for i, seat := range bookedSeats {
+		bookedSeatIDs[i] = int(seat.Int32)
+	}
+
+	cost, err := queries.GetRoomPrice(ctx, scheduleID.Int32)
+	if err != nil {
+		return err
+	}
+
+	return RenderTemplComponent(c, components.SeatEditor(seats, bookedSeatIDs, int(cost.Int32)))
 }
 
 func GetScheduleTime(c echo.Context) error {
@@ -122,36 +136,61 @@ func PostBookTicket(c echo.Context) error {
 	ctx, queries := InitDB()
 
 	selectedSeats := c.Request().Form["seat"]
-	scheduleID := c.QueryParam("scheduleID")
+	scheduleID := StoPGInt4(c.QueryParam("scheduleID"))
+
+	roomPrice, err := queries.GetRoomPrice(ctx, scheduleID.Int32)
+	if err != nil {
+		return err
+	}
+
 	userID := GetCtxData(c).UserID
-	tickets := make([]int, len(selectedSeats))
+	ticketIDs := make([]int, 0, len(selectedSeats))
 	for _, seat := range selectedSeats {
 		ticketID, err := queries.BookTicket(ctx, db.BookTicketParams{
 			SeatID:     StoPGInt4(seat),
-			ScheduleID: StoPGInt4(scheduleID),
+			ScheduleID: scheduleID,
 			UserID:     ItoPGInt4(userID),
+			Cost:       roomPrice,
 		})
 		if err != nil {
 			return err
 		}
-		tickets = append(tickets, int(ticketID))
+		ticketIDs = append(ticketIDs, int(ticketID))
 	}
 
-	if len(tickets) == 0 {
+	if len(ticketIDs) == 0 {
 		return RenderTemplComponent(c, components.ErrorPage("No seat selected"))
 	}
 
-	return RenderTemplComponent(c, components.Payment(tickets))
-}
-
-func GetTicketInfo(c echo.Context) error {
-	ctx, queries := InitDB()
-	ticketID := StoPGInt4(c.QueryParam("id"))
-
-	ticket, err := queries.GetTicket(ctx, ticketID.Int32)
+	tickets := map[int]db.GetTicketSeatRow{}
+	for _, ticketID := range ticketIDs {
+		ticket, err := queries.GetTicketSeat(ctx, int32(ticketID))
+		if err != nil {
+			return err
+		}
+		tickets[ticketID] = ticket
+	}
+	movieID, err := queries.GetMovieBySchedule(ctx, scheduleID.Int32)
 	if err != nil {
-		return RenderTemplComponent(c, components.ErrorPage("Ticket not found"))
+		return err
+	}
+	movie, err := queries.GetMovie(ctx, movieID.Int32)
+	if err != nil {
+		return err
+	}
+	schedule, err := queries.GetSchedule(ctx, scheduleID.Int32)
+	if err != nil {
+		return err
 	}
 
-	return RenderTemplComponent(c, components.Ticket(ticket))
+	return RenderTemplComponent(c, components.Payment(movie, schedule, tickets))
+}
+
+// TODO
+func GetPayment(c echo.Context) error {
+	return nil
+}
+
+func PostValidatePayment(c echo.Context) error {
+	return nil
 }

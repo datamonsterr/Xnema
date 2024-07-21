@@ -6,5 +6,7 @@ WHERE movie_id = $1 LIMIT 1;
 SELECT DISTINCT m.*
 FROM movie m
 INNER JOIN schedule s ON m.movie_id = s.movie_id
-ORDER BY m.release_date
-LIMIT 10;
+ORDER BY m.release_date;
+
+-- name: GetAllMovies :many
+SELECT * FROM movie;

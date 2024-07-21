@@ -2030,14 +2030,6 @@ details.collapse summary::-webkit-details-marker {
   width: 100vw;
 }
 
-.w-1\/2 {
-  width: 50%;
-}
-
-.w-96 {
-  width: 24rem;
-}
-
 .min-w-40 {
   min-width: 10rem;
 }
@@ -2435,4 +2427,9 @@ details.collapse summary::-webkit-details-marker {
 .has-\[\:checked\]\:text-black:has(:checked) {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+.has-\[\:checked\]\:text-white:has(:checked) {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
