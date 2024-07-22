@@ -10,11 +10,24 @@ func AdminGetHome(c echo.Context) error {
 }
 
 func AdminGetMovie(c echo.Context) error {
-	return nil
+	ctx, queries := InitDB()
+	movies, err := queries.GetAllMovies(ctx)
+	if err != nil {
+		return err
+	}
+
+	return RenderTemplComponent(c, components.AdminMovie(movies))
+}
+
+func AdminAddSchedule(c echo.Context) error {
+	return RenderTemplComponent(c, components.ScheduleRow())
 }
 
 func AdminPostAddMovie(c echo.Context) error {
 	return nil
+}
+func AdminGetAddMovie(c echo.Context) error {
+	return RenderTemplComponent(c, components.AdminAddMovie())
 }
 
 func AdminDeleteMovie(c echo.Context) error {
@@ -22,5 +35,9 @@ func AdminDeleteMovie(c echo.Context) error {
 }
 
 func AdminUpdateMovie(c echo.Context) error {
+	return nil
+}
+
+func AdminGetCinema(c echo.Context) error {
 	return nil
 }

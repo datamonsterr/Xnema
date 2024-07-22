@@ -40,6 +40,9 @@ func main() {
 	// Admin
 	a.GET("", handler.AdminGetHome)
 	a.GET("/movie", handler.AdminGetMovie)
+	a.GET("/cinema", handler.AdminGetCinema)
+	a.GET("/add-movie", handler.AdminGetAddMovie)
+	a.GET("/add-schedule", handler.AdminAddSchedule)
 
 	e.GET("", handler.GetIndex)
 	r.GET("", handler.GetIndex)
@@ -56,6 +59,8 @@ func main() {
 	r.GET("/booking/time", handler.GetScheduleTime)
 	r.GET("/booking/seat", handler.GetScheduleSeat)
 	r.POST("/booking/ticket", handler.PostBookTicket)
+	r.GET("/booking/payment", handler.GetPayment)
+	r.POST("/booking/validate-payment", handler.PostValidatePayment)
 
 	r.GET("/booking/payment", handler.GetPayment)
 	r.POST("/booking/validate-payment", handler.PostValidatePayment)

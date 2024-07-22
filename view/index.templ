@@ -33,7 +33,7 @@ templ Index() {
 				if models.GetUserData(ctx).UserRole == "user" {
 					@components.Home()
 				} else if models.GetUserData(ctx).UserRole == "admin" {
-					@components.AdminHome()
+					<div hx-get="/admin/movie" hx-swap="outerHTML" hx-target="this" hx-trigger="load"></div>
 				} else {
 					@components.Home()
 				}

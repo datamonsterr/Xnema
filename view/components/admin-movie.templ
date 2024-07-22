@@ -1,9 +1,130 @@
 package components
 
-import "example.com/test/db"
+import (
+	"example.com/test/db"
+	"fmt"
+)
+
+templ AdminPoster(imgUrl string, alt string, id int) {
+	<div id={ fmt.Sprintf("poster-%d", id) } class="flex items-center justify-center relative row-span-1 col-span-1" onmouseenter={ HoverIn(id) } onmouseleave={ HoverOut(id) }>
+		<img src={ imgUrl } alt={ alt } class="w-full h-full object-fill"/>
+		<div class="poster-hover bg-base-100 bg-opacity-30 z-20  w-full h-full absolute left-0 top-0 flex-col-reverse hidden">
+			<div class="flex justify-evenly h-fit pb-10">
+				<div class="btn btn-primary text-white w-1/3" hx-get={ fmt.Sprintf("/movie/%d/info", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Update</div>
+				<div class="btn btn-secondary text-white w-1/3" hx-get={ fmt.Sprintf("/movie/%d/info", id) } hx-trigger="click" hx-target="#container" hx-swap="innerHTML">Delete</div>
+			</div>
+		</div>
+	</div>
+}
 
 templ AdminMovie(movies []db.Movie) {
-	<div>
-		<div class="btn btn-primary">Add movie</div>
+	<div class="grid grid-flow-row grid-cols-6 mt-10 gap-4">
+		<div class="flex items-center justify-center relative p-10 row-span-1 col-span-1">
+			<div
+				class="btn w-full h-full bg-transparent border border-white border-solid"
+				hx-get="/admin/add-movie"
+				hx-target="#container"
+				hx-swap="innerHTML"
+				hx-trigger="click"
+			>Add movie</div>
+		</div>
+		for _, movie := range movies {
+			@AdminPoster(movie.Url.String, movie.Title.String, int(movie.MovieID))
+		}
 	</div>
+}
+
+templ AdminAddMovie() {
+	<form class="text-black h-full w-full mt-20" hx-include="*">
+		<div class="mb-4">
+			<label for="title" class="block text-white">Movie Title</label>
+			<input type="text" id="title" name="title" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required/>
+		</div>
+		<div class="mb-4">
+			<label for="poster" class="block text-white">Poster Image</label>
+			<input type="file" id="poster" name="poster" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" onchange="previewImage(event)" required/>
+			<img id="poster_preview" class="mt-4 w-full h-auto rounded-md" style="display: none;"/>
+		</div>
+		<div class="mb-4">
+			<label for="release_date" class="block text-white">Release Date</label>
+			<input type="date" id="release_date" name="release_date" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required/>
+		</div>
+		<div class="mb-4">
+			<label for="schedules" class="block text-white">Schedules</label>
+			<table id="schedule_table" class="min-w-full bg-white">
+				<thead>
+					<tr>
+						<th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+						<th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+						<th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cinema</th>
+						<th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room</th>
+						<th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+					</tr>
+				</thead>
+				<tbody id="add-movie-table"></tbody>
+			</table>
+			<div
+				class="btn btn-primary mt-10"
+				hx-get="/admin/add-schedule"
+				hx-target="#add-movie-table"
+				hx-swap="beforeend"
+				hx-trigger="click"
+			>Add Schedule</div>
+		</div>
+		<div class="mb-4">
+			<label for="content" class="block text-white">Short Content</label>
+			<textarea id="content" name="content" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required></textarea>
+		</div>
+		<div class="mb-4">
+			<label for="language" class="block text-white">Original Language</label>
+			<select id="language" name="language" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+				<option value="English">English</option>
+				<option value="Spanish">Spanish</option>
+				<option value="French">French</option>
+				<option value="German">German</option>
+				<option value="Chinese">Chinese</option>
+				<option value="Japanese">Japanese</option>
+				<option value="Other">Other</option>
+			</select>
+		</div>
+		<div class="flex justify-end">
+			<button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700">Add Movie</button>
+		</div>
+	</form>
+}
+
+templ ScheduleRow() {
+	<tr>
+		<td class="px-6 py-4 whitespace-nowrap"><input type="date" name="schedule_date[]" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required/></td>
+		<td class="px-6 py-4 whitespace-nowrap"><input type="time" name="schedule_time[]" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required/></td>
+		<td class="px-6 py-4 whitespace-nowrap">
+			<select name="" id="">
+				<option value="1">Rap 1</option>
+				<option value="2">Rap 2</option>
+				<option value="3">Rap 3</option>
+			</select>
+		</td>
+		<td class="px-6 py-4 whitespace-nowrap">
+			<select name="" id="">
+				<option value="1">Room 1</option>
+				<option value="2">Room 2</option>
+				<option value="3">Room 3</option>
+				<option value="4">Room 4</option>
+				<option value="5">Room 5</option>
+				<option value="6">Room 6</option>
+				<option value="7">Room 7</option>
+				<option value="8">Room 8</option>
+				<option value="9">Room 9</option>
+			</select>
+		</td>
+		<td class="px-6 py-4 whitespace-nowrap">
+			<div
+				class="btn btn-secondary text-white mt-5"
+				hx-get="/"
+				hx-trigger="click"
+				hx-swap="delete"
+				hx-target="closest tr"
+			>Remove</div>
+		</td>
+	</tr>
 }

@@ -188,9 +188,9 @@ func PostBookTicket(c echo.Context) error {
 
 // TODO
 func GetPayment(c echo.Context) error {
-	return nil
+	return RenderTemplComponent(c, components.QRCode())
 }
 
 func PostValidatePayment(c echo.Context) error {
-	return nil
+	return RenderTemplComponent(c, components.Approve())
 }
