@@ -1,41 +1,39 @@
 package components
 
 templ AdminHome() {
-	<div class="w-full mt-10">
-		<div class="flex justftiy-between text-5xl">
-			<label
-				for="movie-radio"
-				class="cursor-pointer px-10 has-[:checked]:text-white"
-				hx-get="/admin/movie"
-				hx-target="#container"
-				hx-swap="innerHTML"
-				hx-trigger="click"
-			>
-				Movie
-				<input id="movie-radio" type="radio" name="admin-label" class="hidden" checked/>
-			</label>
-			<label
-				for="cinema-radio"
-				class="cursor-pointer px-10 has-[:checked]:text-white"
-				hx-get="/admin/cinema"
-				hx-target="#container"
-				hx-swap="innerHTML"
-				hx-trigger="click"
-			>
-				Cinema
-				<input id="cinema-radio" type="radio" name="admin-label" class="hidden"/>
-			</label>
-			<label
-				for="order-radio"
-				class="cursor-pointer px-10 has-[:checked]:text-white"
-				hx-get="/admin/order"
-				hx-target="#container"
-				hx-swap="innerHTML"
-				hx-trigger="click"
-			>
-				Order
-				<input id="order-radio" type="radio" name="admin-label" class="hidden"/>
-			</label>
-		</div>
+	<div class="flex justftiy-between text-5xl">
+		<label
+			for="movie-radio"
+			class="cursor-pointer px-10 has-[:checked]:text-white"
+			hx-get="/admin/movie"
+			hx-target="#container"
+			hx-swap="innerHTML"
+			hx-trigger="click"
+		>
+			Movie
+			<input id="movie-radio" type="radio" name="admin-label" class="hidden" checked/>
+		</label>
+		<label
+			for="cinema-radio"
+			class="cursor-pointer px-10 has-[:checked]:text-white"
+			hx-get="/admin/cinema"
+			hx-target="#container"
+			hx-swap="innerHTML"
+			hx-trigger="click"
+		>
+			Cinema
+			<input id="cinema-radio" type="radio" name="admin-label" class="hidden"/>
+		</label>
+		<label
+			for="order-radio"
+			class="cursor-pointer px-10 has-[:checked]:text-white"
+			hx-get="/admin/order"
+			hx-target="#container"
+			hx-swap="innerHTML"
+			hx-trigger="click"
+		>
+			Order
+			<input id="order-radio" type="radio" name="admin-label" class="hidden"/>
+		</label>
 	</div>
 }

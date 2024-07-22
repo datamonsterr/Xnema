@@ -1,4 +1,22 @@
 package components;
 
-templ AdminCinema() {
+import (
+	"example.com/test/db"
+	"fmt"
+)
+
+templ AdminCinema(cinemas []db.Cinema, rooms []db.Room) {
+	<div class="w-full h-full">
+		for _, cinema := range cinemas {
+			<fieldset>
+				<legend>{ cinema.Name.String }</legend>
+				for _, room := range rooms {
+					<div>
+						<span>{ fmt.Sprintf("%d", room.RoomID) } </span>
+						<span>{ room.Type.String } </span>
+					</div>
+				}
+			</fieldset>
+		}
+	</div>
 }

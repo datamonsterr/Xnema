@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"log"
+
 	"example.com/test/view/components"
 	"github.com/labstack/echo/v4"
 )
@@ -24,6 +26,14 @@ func AdminAddSchedule(c echo.Context) error {
 }
 
 func AdminPostAddMovie(c echo.Context) error {
+	if err := c.Request().ParseForm(); err != nil {
+		log.Println("Error parsing form:", err)
+	}
+
+	// form := c.Request().Form
+	// movieTitle := form["title"][0]
+	// movieLength := form["length"][0]
+
 	return nil
 }
 func AdminGetAddMovie(c echo.Context) error {
@@ -39,5 +49,19 @@ func AdminUpdateMovie(c echo.Context) error {
 }
 
 func AdminGetCinema(c echo.Context) error {
-	return nil
+	ctx, queries := InitDB()
+	cinemas, err := queries.GetAllCinemas(ctx)
+	if err != nil {
+		return err
+	}
+	rooms, err := queries.GetAllRooms(ctx)
+	if err != nil {
+		return err
+	}
+
+	return RenderTemplComponent(c, components.AdminCinema(cinemas, rooms))
+}
+
+func AdminGetOrder(c echo.Context) error {
+	return RenderTemplComponent(c, components.AdminOrder())
 }

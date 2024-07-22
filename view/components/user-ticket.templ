@@ -1,0 +1,28 @@
+package components
+
+import (
+	"example.com/test/db"
+	"fmt"
+)
+
+templ ViewTicket(tickets []db.GetBookedTicketsByUserRow) {
+	for _, ticket := range tickets {
+		<div class="w-full h-fit border border-white border-solid mt-5 p-10">
+			<div class="flex justify-between">
+				<div class="text-3xl font-bold">{ ticket.Title.String }</div>
+				<div class="text-3xl font-bold">{ fmt.Sprintf("%d", ticket.Cost.Int32) }</div>
+			</div>
+			<div class="text-xl font-medium">
+				<div>Release Date: { ticket.ReleaseDate.Time.Format("01-January-2006") }</div>
+				<div>Language: { ticket.OriginalLanguage.String }</div>
+				<div>Date: { ticket.ScheduleMovieDate.Time.Format("01-January-2006") }</div>
+				<div>Time: { convertTime(ticket.ScheduleMovieStart.Microseconds) }</div>
+			</div>
+			<div class="text-2xl font-bold flex justify-between">
+				<div>{ ticket.Name.String }</div>
+				<div>{ fmt.Sprintf("Room %d", ticket.RoomID.Int32) }</div>
+				<div>{ fmt.Sprintf("%s-%d", ticket.Rowss.String, ticket.Columnss.Int32) }</div>
+			</div>
+		</div>
+	}
+}

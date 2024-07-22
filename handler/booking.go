@@ -194,3 +194,13 @@ func GetPayment(c echo.Context) error {
 func PostValidatePayment(c echo.Context) error {
 	return RenderTemplComponent(c, components.Approve())
 }
+
+func GetUserTickets(c echo.Context) error {
+	ctx, queries := InitDB()
+	tickets, err := queries.GetBookedTicketsByUser(ctx, ItoPGInt4(GetCtxData(c).UserID))
+	if err != nil {
+		return err
+	}
+
+	return RenderTemplComponent(c, components.ViewTicket(tickets))
+}
