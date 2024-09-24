@@ -11,11 +11,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Godotenv cannot load, err: %v", err)
-	}
-
+	godotenv.Load()
 	e := echo.New()
 	r := e.Group("/restricted")
 	a := e.Group("/admin")
