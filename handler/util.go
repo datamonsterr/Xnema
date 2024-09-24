@@ -29,7 +29,7 @@ func InitDB() (context.Context, *db.Queries) {
 		password = os.Getenv("POSTGRES_PASSWORD")
 		database = os.Getenv("POSTGRES_DATABASE")
 	)
-	conn, err := pgx.Connect(ctx, fmt.Sprintf("postgresql://%v:%v@localhost:5432/%v?sslmode=disable", user, password, database))
+	conn, err := pgx.Connect(ctx, fmt.Sprintf("postgresql://%s:%s@localhost:5432/%s?sslmode=disable", user, password, database))
 
 	if err != nil {
 		log.Println("Database: Cannot connect.")
